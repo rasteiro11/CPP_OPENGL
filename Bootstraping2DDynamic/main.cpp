@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstdlib>
 #include <stdio.h>
 #include <string.h>
 #include <vector>
@@ -20,6 +21,10 @@ Window mainWindow;
 std::vector<Mesh *> meshList;
 std::vector<Shader> shaderList;
 
+// TODO: Create a buffer to store all the points
+// append
+// getSize
+
 // Vertex Shader code
 static const char *vShader = "Shaders/shader.vert";
 
@@ -34,16 +39,20 @@ void CreateObjects() {
   //                      1.0f,  -1.0f, 0.0f, 0.0f, 1.0f,  0.0f};
   //
 
-  unsigned int indices[]{0, 1};
-  GLfloat vertices[] = {0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f};
+  unsigned int indices[]{0, 1, 2};
+  GLfloat vertices[] = {0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.25f, 0.25f, 0.0f};
 
   Mesh *obj1 = new Mesh();
-  obj1->CreateMesh(vertices, indices, 6, 2);
+  obj1->CreateMesh(vertices, indices, 9, 3);
   meshList.push_back(obj1);
 
-  Mesh *obj2 = new Mesh();
-  obj2->CreateMesh(vertices, indices, 6, 2);
-  meshList.push_back(obj2);
+  //  Mesh *obj1 = new Mesh();
+  //  obj1->CreateMesh(vertices, indices, 6, 2);
+  //  meshList.push_back(obj1);
+  //
+  //  Mesh *obj2 = new Mesh();
+  //  obj2->CreateMesh(vertices, indices, 6, 2);
+  //  meshList.push_back(obj2);
 
   //  Mesh *obj1 = new Mesh();
   //  obj1->CreateMesh(vertices, indices, 12, 12);
@@ -100,7 +109,7 @@ int main() {
     // glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
     // meshList[1]->RenderMesh();
 
-    meshList[1]->RenderMesh();
+    // meshList[1]->RenderMesh();
 
     glUseProgram(0);
 
