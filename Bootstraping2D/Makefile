@@ -9,10 +9,14 @@ SHADER_LIB = Shader
 WINDOW_LIB = Window
 
 all: 
-	$(CC) $(MESH_LIB).cpp -c
-	$(CC) $(SHADER_LIB).cpp -c
-	$(CC) $(WINDOW_LIB).cpp -c
-	$(CC) $(TARGET).cpp $(LIBS) -o $(TARGET) $(MESH_LIB).o $(SHADER_LIB).o $(WINDOW_LIB).o
+	$(CC) $(TARGET).cpp $(LIBS) -o $(TARGET) 
+#	$(CC) $(MESH_LIB).cpp -c
+#	$(CC) $(SHADER_LIB).cpp -c
+#	$(CC) $(WINDOW_LIB).cpp -c
+#	$(CC) $(TARGET).cpp $(LIBS) -o $(TARGET) $(MESH_LIB).o $(SHADER_LIB).o $(WINDOW_LIB).o
+
+test:
+	$(CC) $(TARGET).cpp $(LIBS) -o $(TARGET) 
 
 build:
 	$(CC) $(TARGET).cpp $(LIBS) -o $(TARGET) $(MESH_LIB).o $(SHADER_LIB).o $(WINDOW_LIB).o

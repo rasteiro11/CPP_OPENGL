@@ -11,9 +11,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Mesh.h"
-#include "Shader.h"
-#include "Window.h"
+#include "Buffer/Buffer.hpp"
+#include "Line.hpp"
+#include "Mesh.hpp"
+#include "MeshPoint.hpp"
+#include "Shader.hpp"
+#include "Window.hpp"
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -39,12 +42,34 @@ void CreateObjects() {
   //                      1.0f,  -1.0f, 0.0f, 0.0f, 1.0f,  0.0f};
   //
 
-  unsigned int indices[]{0, 1, 2};
-  GLfloat vertices[] = {0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.25f, 0.25f, 0.0f};
+  // unsigned int indices[]{0, 1, 2};
+  // GLfloat vertices[] = {0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.25f, 0.25f,
+  // 0.0f};
 
-  Mesh *obj1 = new Mesh();
-  obj1->CreateMesh(vertices, indices, 9, 3);
-  meshList.push_back(obj1);
+  // Buffer<unsigned int> *indices = new Buffer<unsigned int>();
+  // indices->push(0);
+  // indices->push(1);
+  // indices->push(2);
+  // Buffer<GLfloat> *vertices = new Buffer<GLfloat>();
+  // vertices->push_point(Point(0.0f, 0.0f));
+  // vertices->push_point(Point(0.25f, 0.25f));
+  // vertices->push_point(Point(0.5f, 0.5f));
+
+  Buffer<unsigned int> *indices = new Buffer<unsigned int>(500);
+  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(500);
+  Line<unsigned int, GLfloat>::renderNaiveLine(
+      *indices, *vertices, Point(0.0, 0.0), Point(1.0, 1.0));
+
+  MeshPoint *points =
+      new MeshPoint(vertices->return_raw_buffer(), indices->return_raw_buffer(),
+                    vertices->get_size(), indices->get_size());
+  meshList.push_back(points);
+
+  // MeshPoint *obj1 = new MeshPoint();
+  // obj1->CreateMesh(vertices->return_raw_buffer(),
+  // indices->return_raw_buffer(),
+  //                 vertices->get_size(), indices->get_size());
+  // meshList.push_back(obj1);
 
   //  Mesh *obj1 = new Mesh();
   //  obj1->CreateMesh(vertices, indices, 6, 2);
