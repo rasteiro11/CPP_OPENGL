@@ -20,10 +20,9 @@ public:
       }
       while (y < p2.y) {
         indices.push(i);
-        vertices.push_point(Point(x, y));
-        // SDL_RenderDrawRectF(renderer, new Point(x, y, 1));
+        vertices.push_point(*new Point(x, y));
         x = p1.x + (dx / dy) * (y - p1.y);
-        y += 0.01;
+        y += 0.0001;
         i++;
       }
     } else {
@@ -34,10 +33,9 @@ public:
       }
       while (x < p2.x) {
         indices.push(i);
-        vertices.push_point(Point(x, y));
-        // SDL_RenderDrawRectF(renderer, new Point(x, y, 1));
+        vertices.push_point(*new Point(x, y));
         y = p1.y + (dy / dx) * (x - p1.x);
-        x += 0.01;
+        x += 0.0001;
         i++;
       }
     }

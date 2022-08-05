@@ -29,8 +29,7 @@ public:
     std::cout << "LENGTH: " << this->length << "\n";
   }
 
-  void push_point(Point p) {
-    show_buff_info();
+  void push_point(Point &p) {
     if (this->size + 1 == this->length) {
       resize();
     }
@@ -39,7 +38,6 @@ public:
     this->data[this->size++] = p.z;
   }
   void push(T val) {
-    show_buff_info();
     if ((this->size + 1) == this->length) {
       resize();
     }

@@ -7,8 +7,8 @@
 class Window {
 public:
   Window() {
-    width = 800;
-    height = 600;
+    width = 1366;
+    height = 768;
 
     for (size_t i = 0; i < 1024; i++) {
       keys[i] = 0;
