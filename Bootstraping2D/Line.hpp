@@ -19,10 +19,10 @@ public:
         temp = p2;
       }
       while (y < p2.y) {
+        x = p1.x + (dx / dy) * (y - p1.y);
+        y += 0.001;
         indices.push(i);
         vertices.push_point(*new Point(x, y));
-        x = p1.x + (dx / dy) * (y - p1.y);
-        y += 0.0001;
         i++;
       }
     } else {
@@ -32,10 +32,10 @@ public:
         temp = p2;
       }
       while (x < p2.x) {
+        y = p1.y + (dy / dx) * (x - p1.x);
+        x += 0.001;
         indices.push(i);
         vertices.push_point(*new Point(x, y));
-        y = p1.y + (dy / dx) * (x - p1.x);
-        x += 0.0001;
         i++;
       }
     }

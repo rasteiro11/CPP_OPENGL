@@ -23,6 +23,8 @@ const float toRadians = 3.14159265f / 180.0f;
 Window mainWindow;
 std::vector<Mesh *> meshList;
 std::vector<Shader> shaderList;
+// Buffer<unsigned int> *indices;
+// Buffer<GLfloat> *vertices;
 
 // TODO: Create a buffer to store all the points
 // append
@@ -55,8 +57,8 @@ void CreateObjects() {
   // vertices->push_point(Point(0.25f, 0.25f));
   // vertices->push_point(Point(0.5f, 0.5f));
 
-  Buffer<unsigned int> *indices = new Buffer<unsigned int>(500);
-  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(500);
+  Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
+  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(1000);
   Line<unsigned int, GLfloat>::renderNaiveLine(
       *indices, *vertices, Point(0.0, 0.0), Point(1.0, 1.0));
 
@@ -64,6 +66,16 @@ void CreateObjects() {
       new MeshPoint(vertices->return_raw_buffer(), indices->return_raw_buffer(),
                     vertices->get_size(), indices->get_size());
   meshList.push_back(points);
+
+  Buffer<unsigned int> *indices_2 = new Buffer<unsigned int>(1000);
+  Buffer<GLfloat> *vertices_2 = new Buffer<GLfloat>(1000);
+  Line<unsigned int, GLfloat>::renderNaiveLine(
+      *indices_2, *vertices_2, Point(0.0, 0.0), Point(0.0, 1.0));
+
+  MeshPoint *points_2 = new MeshPoint(
+      vertices_2->return_raw_buffer(), indices_2->return_raw_buffer(),
+      vertices_2->get_size(), indices_2->get_size());
+  meshList.push_back(points_2);
 
   // MeshPoint *obj1 = new MeshPoint();
   // obj1->CreateMesh(vertices->return_raw_buffer(),
@@ -96,7 +108,7 @@ void CreateShaders() {
 
 int main() {
 
-  mainWindow = Window(1366, 768);
+  mainWindow = Window(400, 400);
   mainWindow.Initialize();
 
   CreateObjects();
@@ -127,6 +139,7 @@ int main() {
     //  glUniformMatrix4fv(uniformProjection, 1, GL_FALSE,
     //                     glm::value_ptr(projection));
     meshList[0]->RenderMesh();
+    meshList[1]->RenderMesh();
 
     //  model = glm::mat4(1.0f);
     //  model = glm::translate(model, glm::vec3(0.0f, 1.0f, -2.5f));
@@ -140,6 +153,12 @@ int main() {
 
     mainWindow.swapBuffers();
   }
+  // printf("ALL THE POINTS\n");
+  // for (int i = 0; i < vertices->get_size(); i += 3) {
+  //  printf("(x: %f, y: %f)\n", vertices->return_raw_buffer()[i],
+  //         vertices->return_raw_buffer()[i + 1]);
+  //}
+  // printf("FINAL SIZE: %zu\n", vertices->get_size());
 
   return 0;
 }

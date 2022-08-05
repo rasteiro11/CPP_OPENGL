@@ -30,7 +30,7 @@ public:
   }
 
   void push_point(Point &p) {
-    if (this->size + 1 == this->length) {
+    if (this->size + 3 == this->length) {
       resize();
     }
     this->data[this->size++] = p.x;
