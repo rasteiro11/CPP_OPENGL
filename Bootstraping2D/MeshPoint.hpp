@@ -3,12 +3,21 @@
 #define _MESH_POINT
 #include "Mesh.hpp"
 #include "Point.hpp"
+#include "RGB.hpp"
+#include "Shader.hpp"
+#include <cstdio>
+#include <glm/ext/vector_float3.hpp>
+#include <glm/gtc/type_ptr.hpp>
 class MeshPoint : public Mesh, private Point {
 public:
   MeshPoint(){};
-  MeshPoint(GLfloat *vertices, unsigned int *indices,
-            unsigned int numOfVertices, unsigned int numOfIndices) {
+  MeshPoint(Shader &shader, RGB &color, GLfloat *vertices,
+            unsigned int *indices, unsigned int numOfVertices,
+            unsigned int numOfIndices) {
     indexCount = numOfIndices;
+    uniform_color_vec[0] = color.getR();
+    uniform_color_vec[1] = color.getG();
+    uniform_color_vec[2] = color.getB();
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -32,6 +41,8 @@ public:
     glBindVertexArray(0);
   }
   virtual void RenderMesh() {
+    // glUniform1f(shader.GetUniformColorRed(), 1.0f);
+    glUniform3fv(shader.GetUniformColorVec(), 1, &uniform_color_vec[0]);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glPointSize(2);
@@ -40,6 +51,10 @@ public:
     glBindVertexArray(0);
   }
   ~MeshPoint() { ClearMesh(); }
+
+private:
+  Shader shader;
+  float uniform_color_vec[3];
 };
 
 #endif

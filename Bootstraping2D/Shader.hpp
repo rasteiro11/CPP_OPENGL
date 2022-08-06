@@ -1,5 +1,5 @@
 #ifndef _SHADER
-#define _SAHDER
+#define _SHADER
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
@@ -13,6 +13,10 @@ public:
     shaderID = 0;
     uniformModel = 0;
     uniformProjection = 0;
+    uniformColorVec = 0;
+    // uniformColorRed = 0;
+    // uniformColorGreen = 0;
+    // uniformColorBlue = 0;
   }
   void CreateFromString(const char *vertexCode, const char *fragmentCode) {
     CompileShader(vertexCode, fragmentCode);
@@ -45,19 +49,25 @@ public:
 
   GLuint GetProjectionLocation() { return uniformProjection; }
   GLuint GetModelLocation() { return uniformProjection; }
+  GLuint GetUniformColorVec() { return uniformColorVec; }
+  // GLuint GetUniformColorRed() { return uniformColorRed; }
+  // GLuint GetUniformColorGreen() { return uniformColorGreen; }
+  // GLuint GetUniformColorBlue() { return uniformColorBlue; }
   void UseShader() { glUseProgram(shaderID); }
   void ClearShader() {
     if (shaderID != 0) {
       glDeleteProgram(shaderID);
       shaderID = 0;
     }
+    uniformColorVec = 0;
     uniformModel = 0;
     uniformProjection = 0;
   }
   ~Shader() { ClearShader(); }
 
 private:
-  GLuint shaderID, uniformProjection, uniformModel;
+  GLuint shaderID, uniformProjection, uniformModel, uniformColorVec;
+
   void CompileShader(const char *vertexCode, const char *fragmentCode) {
     shaderID = glCreateProgram();
 
@@ -87,7 +97,10 @@ private:
       printf("Error validating program: '%s'\n", eLog);
       return;
     }
-
+    uniformColorVec = glGetUniformLocation(shaderID, "uniform_color_vec");
+    // uniformColorRed = glGetUniformLocation(shaderID, "uniform_red");
+    // uniformColorGreen = glGetUniformLocation(shaderID, "uniform_green");
+    // uniformColorBlue = glGetUniformLocation(shaderID, "uniform_blue");
     uniformModel = glGetUniformLocation(shaderID, "model");
     uniformProjection = glGetUniformLocation(shaderID, "projection");
   }
