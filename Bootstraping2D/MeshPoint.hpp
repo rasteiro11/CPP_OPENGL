@@ -45,7 +45,7 @@ public:
     glUniform3fv(shader.GetUniformColorVec(), 1, &uniform_color_vec[0]);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glPointSize(2);
+    glPointSize(5);
     glDrawElements(GL_POINTS, indexCount, GL_UNSIGNED_INT, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

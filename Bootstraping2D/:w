@@ -37,77 +37,48 @@ static const char *fShader = "Shaders/shader.frag";
 
 void CreateObjects() {
 
-  // Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
-  // Buffer<GLfloat> *vertices = new Buffer<GLfloat>(5000);
-  // vertices->push_point(*new Point(800, 600));
-  // indices->push(0);
-  // vertices->push_point(*new Point(800, 0));
-  // indices->push(1);
-  // vertices->push_point(*new Point(0, 600));
-  // indices->push(2);
-  // vertices->push_point(*new Point(0, 0));
-  // indices->push(3);
-  // vertices->push_point(*new Point(400, 300));
-  // indices->push(4);
+  Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
+  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(5000);
+  vertices->push_point(*new Point(800, 600));
+  indices->push(0);
+  vertices->push_point(*new Point(800, 0));
+  indices->push(1);
+  vertices->push_point(*new Point(0, 600));
+  indices->push(2);
+  vertices->push_point(*new Point(0, 0));
+  indices->push(3);
+  vertices->push_point(*new Point(400, 300));
+  indices->push(4);
 
-  // MeshPoint *points = new MeshPoint(
-  //     *shader1, *new RGB(1.0, 0.0, 1.0), vertices->return_raw_buffer(),
-  //     indices->return_raw_buffer(), vertices->get_size(),
-  //     indices->get_size());
-  // meshList.push_back(points);
+  MeshPoint *points = new MeshPoint(
+      *shader1, *new RGB(1.0, 0.0, 1.0), vertices->return_raw_buffer(),
+      indices->return_raw_buffer(), vertices->get_size(), indices->get_size());
+  meshList.push_back(points);
 
   // Line<unsigned int, GLfloat>::renderNaiveLine(
   //    *indices, *vertices, *new Point(0, 0), *new Point(800, 600));
 
-  // Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
-  // Buffer<GLfloat> *vertices = new Buffer<GLfloat>(5000);
-  // Line<unsigned int, GLfloat>::renderNaiveLine(
-  //     *indices, *vertices, *new Point(-1, 0), *new Point(1, 0));
-
-  // MeshPoint *points = new MeshPoint(
-  //     *shader1, *new RGB(1.0, 0.0, 1.0), vertices->return_raw_buffer(),
-  //     indices->return_raw_buffer(), vertices->get_size(),
-  //     indices->get_size());
-  // meshList.push_back(points);
-
-  // Buffer<unsigned int> *indices_2 = new Buffer<unsigned int>(1000);
-  // Buffer<GLfloat> *vertices_2 = new Buffer<GLfloat>(5000);
-  // Line<unsigned int, GLfloat>::renderNaiveLine(
-  //     *indices_2, *vertices_2, *new Point(-0.5f, 0.0f), *new Point(0.5f,
-  //     0.0f));
-
-  // MeshPoint *points_2 = new MeshPoint(
-  //     *shader1, *new RGB(0.0, 1.0, 1.0), vertices_2->return_raw_buffer(),
-  //     indices_2->return_raw_buffer(), vertices_2->get_size(),
-  //     indices_2->get_size());
-  // meshList.push_back(points_2);
+  //  Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
+  //  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(5000);
+  //  Line<unsigned int, GLfloat>::renderNaiveLine(
+  //      *indices, *vertices, *new Point(0, 0), *new Point(800, 600));
+  //
+  //  MeshPoint *points = new MeshPoint(
+  //      *shader1, *new RGB(1.0, 0.0, 1.0), vertices->return_raw_buffer(),
+  //      indices->return_raw_buffer(), vertices->get_size(),
+  //      indices->get_size());
+  //  meshList.push_back(points);
 
   // Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
   // Buffer<GLfloat> *vertices = new Buffer<GLfloat>(5000);
   // Line<unsigned int, GLfloat>::renderNaiveLine(
   //    *indices, *vertices, *new Point(10, 100), *new Point(20, 400));
-  //
+
   // MeshPoint *points = new MeshPoint(
   //    *shader1, *new RGB(1.0, 0.0, 1.0), vertices->return_raw_buffer(),
   //    indices->return_raw_buffer(), vertices->get_size(),
   //    indices->get_size());
   // meshList.push_back(points);
-
-  //
-  //  Buffer<unsigned int> *indices_3 = new Buffer<unsigned int>(1000);
-  //  Buffer<GLfloat> *vertices_3 = new Buffer<GLfloat>(5000);
-  //  Line<unsigned int, GLfloat>::renderNaiveLine(
-  //      *indices_3, *vertices_3, *new Point(0, 300), *new Point(800, 300));
-  //
-  //  MeshPoint *points_3 = new MeshPoint(
-  //      *shader1, *new RGB(0.0, 1.0, 1.0), vertices_3->return_raw_buffer(),
-  //      indices_3->return_raw_buffer(), vertices_3->get_size(),
-  //      indices_3->get_size());
-  //  meshList.push_back(points_3);
-  //
-  //
-
-  // INIT OF TESTING
 
   Buffer<unsigned int> *indices_2 = new Buffer<unsigned int>(1000);
   Buffer<GLfloat> *vertices_2 = new Buffer<GLfloat>(5000);
@@ -130,32 +101,39 @@ void CreateObjects() {
       indices_3->return_raw_buffer(), vertices_3->get_size(),
       indices_3->get_size());
   meshList.push_back(points_3);
-
-  Buffer<unsigned int> *indices_4 = new Buffer<unsigned int>(1000);
-  Buffer<GLfloat> *vertices_4 = new Buffer<GLfloat>(5000);
-  Line<unsigned int, GLfloat>::renderNaiveLine(
-      *indices_4, *vertices_4, *new Point(0, 600), *new Point(400, 300));
-
-  MeshPoint *points_4 = new MeshPoint(
-      *shader1, *new RGB(0.0, 1.0, 0.0), vertices_4->return_raw_buffer(),
-      indices_4->return_raw_buffer(), vertices_4->get_size(),
-      indices_4->get_size());
-  meshList.push_back(points_4);
-
-  Buffer<unsigned int> *indices_5 = new Buffer<unsigned int>(1000);
-  Buffer<GLfloat> *vertices_5 = new Buffer<GLfloat>(5000);
-  Line<unsigned int, GLfloat>::renderNaiveLine(
-      *indices_5, *vertices_5, *new Point(795, 0), *new Point(800, 600));
-
-  MeshPoint *points_5 = new MeshPoint(
-      *shader1, *new RGB(1.0, 1.0, 0.0), vertices_5->return_raw_buffer(),
-      indices_5->return_raw_buffer(), vertices_5->get_size(),
-      indices_5->get_size());
-  meshList.push_back(points_5);
-
-  vertices_5->show();
-
-  // END OF TESTING
+  //
+  //  Buffer<unsigned int> *indices_3 = new Buffer<unsigned int>(1000);
+  //  Buffer<GLfloat> *vertices_3 = new Buffer<GLfloat>(5000);
+  //  Line<unsigned int, GLfloat>::renderNaiveLine(
+  //      *indices_3, *vertices_3, *new Point(0, 300), *new Point(800, 300));
+  //
+  //  MeshPoint *points_3 = new MeshPoint(
+  //      *shader1, *new RGB(0.0, 1.0, 1.0), vertices_3->return_raw_buffer(),
+  //      indices_3->return_raw_buffer(), vertices_3->get_size(),
+  //      indices_3->get_size());
+  //  meshList.push_back(points_3);
+  //
+  //  Buffer<unsigned int> *indices_4 = new Buffer<unsigned int>(1000);
+  //  Buffer<GLfloat> *vertices_4 = new Buffer<GLfloat>(5000);
+  //  Line<unsigned int, GLfloat>::renderNaiveLine(
+  //      *indices_4, *vertices_4, *new Point(400, 0), *new Point(400, 600));
+  //
+  //  MeshPoint *points_4 = new MeshPoint(
+  //      *shader1, *new RGB(0.0, 1.0, 0.0), vertices_4->return_raw_buffer(),
+  //      indices_4->return_raw_buffer(), vertices_4->get_size(),
+  //      indices_4->get_size());
+  //  meshList.push_back(points_4);
+  //
+  //  Buffer<unsigned int> *indices_5 = new Buffer<unsigned int>(1000);
+  //  Buffer<GLfloat> *vertices_5 = new Buffer<GLfloat>(5000);
+  //  Line<unsigned int, GLfloat>::renderNaiveLine(
+  //      *indices_5, *vertices_5, *new Point(800, 500), *new Point(0, 0));
+  //
+  //  MeshPoint *points_5 = new MeshPoint(
+  //      *shader1, *new RGB(1.0, 0.0, 1.0), vertices_5->return_raw_buffer(),
+  //      indices_5->return_raw_buffer(), vertices_5->get_size(),
+  //      indices_5->get_size());
+  //  meshList.push_back(points_5);
 
   // MeshPoint *points_4 = new MeshPoint(
   //    *shader1, *new RGB(0.0, 1.0, 1.0), vertices_4->return_raw_buffer(),
@@ -205,17 +183,6 @@ void CreateObjects() {
   //  Mesh *obj2 = new Mesh();
   //  obj2->CreateMesh(vertices, indices, 12, 12);
   //  meshList.push_back(obj2);
-
-  // TESTING COORDINATES CONVERSION
-
-  Point *p1 = new Point(800, 600);
-  Point *p2 = new Point(0, 0);
-  Point *p3 = new Point(800, 0);
-  Point *p4 = new Point(0, 600);
-  std::cout << "(800, 600):" << *p1 << std::endl;
-  std::cout << "(0, 0):" << *p2 << std::endl;
-  std::cout << "(800, 0):" << *p3 << std::endl;
-  std::cout << "(0, 600):" << *p4 << std::endl;
 }
 
 void CreateShaders() {
@@ -241,6 +208,7 @@ int main() {
 
   while (!mainWindow.getShouldClose()) {
     glfwPollEvents();
+    glOrtho(0.f, 800.0f, 600.0f, 0.f, 0.f, 1.f);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -256,16 +224,9 @@ int main() {
     //  glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
     //  glUniformMatrix4fv(uniformProjection, 1, GL_FALSE,
     //                     glm::value_ptr(projection));
-    //    meshList[0]->RenderMesh();
-    //    meshList[1]->RenderMesh();
-    //    meshList[2]->RenderMesh();
-    //    meshList[3]->RenderMesh();
-    //    meshList[4]->RenderMesh();
-
-    for (auto mesh : meshList) {
-      mesh->RenderMesh();
-    }
-
+    meshList[0]->RenderMesh();
+    meshList[1]->RenderMesh();
+    meshList[2]->RenderMesh();
     // meshList[1]->RenderMesh();
     // meshList[2]->RenderMesh();
     // meshList[3]->RenderMesh();
