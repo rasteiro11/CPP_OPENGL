@@ -7,8 +7,8 @@
 class Window {
 public:
   Window() {
-    width = 1366;
-    height = 768;
+    width = 800;
+    height = 400;
 
     for (size_t i = 0; i < 1024; i++) {
       keys[i] = 0;
@@ -45,7 +45,7 @@ public:
     glfwMakeContextCurrent(mainWindow);
 
     createCallbacks();
-    glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //  glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glewExperimental = GL_TRUE;
 

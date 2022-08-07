@@ -38,9 +38,9 @@ static const char *fShader = "Shaders/shader.frag";
 void CreateObjects() {
 
   Buffer<unsigned int> *indices = new Buffer<unsigned int>(1000);
-  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(1000);
+  Buffer<GLfloat> *vertices = new Buffer<GLfloat>(5000);
   Line<unsigned int, GLfloat>::renderNaiveLine(
-      *indices, *vertices, Point(0.0, 0.0), Point(0.90, 0.90));
+      *indices, *vertices, *new Point(10, 100), *new Point(20, 400));
 
   MeshPoint *points = new MeshPoint(
       *shader1, *new RGB(1.0, 0.0, 1.0), vertices->return_raw_buffer(),
@@ -48,9 +48,9 @@ void CreateObjects() {
   meshList.push_back(points);
 
   Buffer<unsigned int> *indices_2 = new Buffer<unsigned int>(1000);
-  Buffer<GLfloat> *vertices_2 = new Buffer<GLfloat>(1000);
+  Buffer<GLfloat> *vertices_2 = new Buffer<GLfloat>(5000);
   Line<unsigned int, GLfloat>::renderNaiveLine(
-      *indices_2, *vertices_2, Point(0.0, 0.0), Point(0.0, 0.90));
+      *indices_2, *vertices_2, *new Point(0, 600), *new Point(800, 0));
 
   MeshPoint *points_2 = new MeshPoint(
       *shader1, *new RGB(1.0, 1.0, 0.0), vertices_2->return_raw_buffer(),
@@ -59,15 +59,55 @@ void CreateObjects() {
   meshList.push_back(points_2);
 
   Buffer<unsigned int> *indices_3 = new Buffer<unsigned int>(1000);
-  Buffer<GLfloat> *vertices_3 = new Buffer<GLfloat>(1000);
+  Buffer<GLfloat> *vertices_3 = new Buffer<GLfloat>(5000);
   Line<unsigned int, GLfloat>::renderNaiveLine(
-      *indices_3, *vertices_3, Point(0.0, 0.90), Point(0.90, 0.90));
+      *indices_3, *vertices_3, *new Point(0, 300), *new Point(800, 300));
 
   MeshPoint *points_3 = new MeshPoint(
       *shader1, *new RGB(0.0, 1.0, 1.0), vertices_3->return_raw_buffer(),
       indices_3->return_raw_buffer(), vertices_3->get_size(),
       indices_3->get_size());
   meshList.push_back(points_3);
+
+  Buffer<unsigned int> *indices_4 = new Buffer<unsigned int>(1000);
+  Buffer<GLfloat> *vertices_4 = new Buffer<GLfloat>(5000);
+  Line<unsigned int, GLfloat>::renderNaiveLine(
+      *indices_4, *vertices_4, *new Point(400, 0), *new Point(400, 600));
+
+  MeshPoint *points_4 = new MeshPoint(
+      *shader1, *new RGB(0.0, 1.0, 0.0), vertices_4->return_raw_buffer(),
+      indices_4->return_raw_buffer(), vertices_4->get_size(),
+      indices_4->get_size());
+  meshList.push_back(points_4);
+
+  Buffer<unsigned int> *indices_5 = new Buffer<unsigned int>(1000);
+  Buffer<GLfloat> *vertices_5 = new Buffer<GLfloat>(5000);
+  Line<unsigned int, GLfloat>::renderNaiveLine(
+      *indices_5, *vertices_5, *new Point(800, 500), *new Point(0, 0));
+
+  MeshPoint *points_5 = new MeshPoint(
+      *shader1, *new RGB(1.0, 0.0, 1.0), vertices_5->return_raw_buffer(),
+      indices_5->return_raw_buffer(), vertices_5->get_size(),
+      indices_5->get_size());
+  meshList.push_back(points_5);
+
+  // MeshPoint *points_4 = new MeshPoint(
+  //    *shader1, *new RGB(0.0, 1.0, 1.0), vertices_4->return_raw_buffer(),
+  //    indices_4->return_raw_buffer(), vertices_4->get_size(),
+  //    indices_4->get_size());
+  // meshList.push_back(points_4);
+
+  // Buffer<unsigned int> *indices_5 = new Buffer<unsigned int>(1000);
+  // Buffer<GLfloat> *vertices_5 = new Buffer<GLfloat>(1000);
+  // Line<unsigned int, GLfloat>::renderNaiveLine(
+  //    *indices_5, *vertices_5, *new Point(0, 0), *new Point(800, 600));
+
+  // MeshPoint *points_5 = new MeshPoint(
+  //    *shader1, *new RGB(1.0, 1.0, 0.0), vertices_5->return_raw_buffer(),
+  //    indices_5->return_raw_buffer(), vertices_5->get_size(),
+  //    indices_5->get_size());
+  // meshList.push_back(points_5);
+
   //
   //  Buffer<unsigned int> *indices_3 = new Buffer<unsigned int>(1000);
   //  Buffer<GLfloat> *vertices_3 = new Buffer<GLfloat>(1000);
@@ -109,7 +149,7 @@ void CreateShaders() {
 
 int main() {
 
-  mainWindow = Window(400, 400);
+  mainWindow = Window();
   mainWindow.Initialize();
 
   CreateObjects();
@@ -142,6 +182,8 @@ int main() {
     meshList[0]->RenderMesh();
     meshList[1]->RenderMesh();
     meshList[2]->RenderMesh();
+    meshList[3]->RenderMesh();
+    meshList[4]->RenderMesh();
     //    meshList[2]->RenderMesh();
 
     //  model = glm::mat4(1.0f);
