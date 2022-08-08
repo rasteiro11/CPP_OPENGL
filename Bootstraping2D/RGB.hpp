@@ -3,6 +3,7 @@
 
 class RGB {
 public:
+  RGB();
   RGB(float r, float g, float b) : r(r), g(g), b(b) {}
   inline float getR() { return r; }
   inline float getG() { return g; }

@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <glm/ext/vector_float3.hpp>
 #include <glm/gtc/type_ptr.hpp>
-class MeshPoint : public Mesh, private Point {
+class MeshPoint : public Mesh {
 public:
   MeshPoint(){};
   MeshPoint(Shader &shader, RGB &color, GLfloat *vertices,
