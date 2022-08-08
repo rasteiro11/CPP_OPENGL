@@ -1,5 +1,6 @@
 #ifndef _BUFFER
 #define _BUFFER
+#include "../Point.hpp"
 #include <cstddef>
 #include <iostream>
 template <typename T> class Buffer {
@@ -22,12 +23,22 @@ public:
   }
   T *return_raw_buffer() { return this->data; }
   const size_t get_size() { return this->size; };
+
   void show_buff_info() {
     std::cout << "SIZE: " << this->size << "\n";
     std::cout << "LENGTH: " << this->length << "\n";
   }
+
+  void push_point(Point &p) {
+    if (this->size + 3 >= this->length) {
+      resize();
+    }
+    this->data[this->size++] = p.x;
+    this->data[this->size++] = p.y;
+    this->data[this->size++] = p.z;
+  }
   void push(T val) {
-    if (this->size + 1 == this->length) {
+    if ((this->size + 1) == this->length) {
       resize();
     }
     this->data[this->size++] = val;
@@ -44,11 +55,11 @@ public:
     for (int i = 0; i < this->size; i++) {
       temp_arr[i] = this->data[i];
     }
-    delete this->data;
     this->length *= 2;
+    delete[] this->data;
     this->data = temp_arr;
     std::cout << "NEW LENGTH: " << this->length << std::endl;
   }
-  ~Buffer() { delete this->data; }
+  ~Buffer() { delete[] this->data; }
 };
 #endif
