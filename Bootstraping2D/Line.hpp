@@ -78,7 +78,7 @@ private:
   Shader *shader;
   RGB *color;
   Buffer<unsigned int> &indices = *new Buffer<unsigned int>(1000);
-  Buffer<GLfloat> &vertices = *new Buffer<GLfloat>(5000);
+  Buffer<GLfloat> &vertices = *new Buffer<GLfloat>(1000);
 };
 
 #endif

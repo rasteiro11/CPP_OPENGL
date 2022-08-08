@@ -30,7 +30,7 @@ public:
   }
 
   void push_point(Point &p) {
-    if (this->size + 3 == this->length) {
+    if (this->size + 3 >= this->length) {
       resize();
     }
     this->data[this->size++] = p.x;
@@ -55,11 +55,11 @@ public:
     for (int i = 0; i < this->size; i++) {
       temp_arr[i] = this->data[i];
     }
-    delete this->data;
     this->length *= 2;
+    delete[] this->data;
     this->data = temp_arr;
     std::cout << "NEW LENGTH: " << this->length << std::endl;
   }
-  ~Buffer() { delete this->data; }
+  ~Buffer() { delete[] this->data; }
 };
 #endif
