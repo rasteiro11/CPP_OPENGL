@@ -1,5 +1,7 @@
 #ifndef _MESH
 #define _MESH
+#include "RGB.hpp"
+#include "Shader.hpp"
 #include <GL/glew.h>
 class Mesh {
 public:
@@ -9,10 +11,14 @@ public:
     IBO = 0;
     indexCount = 0;
   }
-  void CreateMesh(GLfloat *vertices, unsigned int *indices,
-                  unsigned int numOfVertices, unsigned int numOfIndices) {
+  void CreateMesh(Shader &shader, RGB &color, GLfloat *vertices,
+                  unsigned int *indices, unsigned int numOfVertices,
+                  unsigned int numOfIndices) {
 
     indexCount = numOfIndices;
+    uniform_color_vec[0] = color.getR();
+    uniform_color_vec[1] = color.getG();
+    uniform_color_vec[2] = color.getB();
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -56,5 +62,7 @@ public:
 protected:
   GLuint VAO, VBO, IBO;
   GLsizei indexCount;
+  Shader shader;
+  float uniform_color_vec[3];
 };
 #endif
