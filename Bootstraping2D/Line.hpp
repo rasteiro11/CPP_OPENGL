@@ -1,13 +1,31 @@
-#ifndef _LINE
-#define _LINE
+#ifndef _LINE_TEST
+#define _LINE_TEST
 #include "Buffer/Buffer.hpp"
+#include "MeshPoint.hpp"
 #include "Point.hpp"
-#include <cstdio>
-template <class T, class E> class Line {
+#include "RGB.hpp"
+#include "Shader.hpp"
+
+class Line : public MeshPoint {
+  static constexpr float step = 0.001;
+
 public:
-  constexpr static const float step = 0.001;
-  static void renderNaiveLine(Buffer<T> &indices, Buffer<E> &vertices, Point p1,
-                              Point p2) {
+  Line(Point p1, Point p2, RGB &color, Shader &shader) {
+    this->p1 = p1;
+    this->p2 = p2;
+    this->shader = &shader;
+    this->color = &color;
+    renderNaiveLine();
+    CreateMesh(shader, color, vertices.return_raw_buffer(),
+               indices.return_raw_buffer(), vertices.get_size(),
+               indices.get_size());
+  }
+
+  ~Line() { ClearMesh(); }
+
+  void drawLine() { RenderMesh(); }
+
+  void renderNaiveLine() {
     int i = 0;
     float m, b, x, y;
     float dx = p2.x - p1.x;
@@ -56,5 +74,11 @@ private:
     *p1 = *p2;
     *p2 = temp;
   }
+  Point p1, p2;
+  Shader *shader;
+  RGB *color;
+  Buffer<unsigned int> &indices = *new Buffer<unsigned int>(1000);
+  Buffer<GLfloat> &vertices = *new Buffer<GLfloat>(5000);
 };
+
 #endif
