@@ -12,6 +12,7 @@
 //#include <glm/gtc/type_ptr.hpp>
 
 #include "Buffer/Buffer.hpp"
+#include "Dot.hpp"
 #include "Line.hpp"
 #include "Mesh.hpp"
 #include "MeshPoint.hpp"
@@ -67,8 +68,7 @@ int main() {
                           shaderList[0]);
   Line *line_3 = new Line(Point(795, 0), Point(800, 600),
                           *new RGB(1.0, 0.0, 1.0), shaderList[0]);
-
-  float *test = new float[5000];
+  Dot *dot = new Dot(Point(400, 200), *new RGB(1.0, 0.0, 1.0), shaderList[0]);
 
   while (!mainWindow.getShouldClose()) {
     glfwPollEvents();
@@ -80,6 +80,7 @@ int main() {
     line_1->drawLine();
     line_2->drawLine();
     line_3->drawLine();
+    dot->drawDot();
 
     //    for (auto mesh : meshList) {
     //      mesh->RenderMesh();

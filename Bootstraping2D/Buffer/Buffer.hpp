@@ -50,7 +50,6 @@ public:
     }
   }
   void resize() {
-    std::cout << "RESIZING BUFFER" << std::endl;
     T *temp_arr = new T[2 * this->length];
     for (int i = 0; i < this->size; i++) {
       temp_arr[i] = this->data[i];
@@ -58,7 +57,6 @@ public:
     this->length *= 2;
     delete[] this->data;
     this->data = temp_arr;
-    std::cout << "NEW LENGTH: " << this->length << std::endl;
   }
   ~Buffer() { delete[] this->data; }
 };
