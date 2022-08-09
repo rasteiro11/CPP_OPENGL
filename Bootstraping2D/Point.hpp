@@ -12,18 +12,16 @@ public:
   GLfloat x, y, z;
   Point() : x(0.0f), y(0.0f), z(0.0f) {}
   Point(int x, int y) : x(x), y(y), z(0.0f) {
-    this->x = 2.0 * x / WIDTH - 1.0;
-    this->y = 1.0 - 2.0 * y / HEIGHT;
-    //   printf("x: %f, y: %f\n", this->x, this->y);
-    // this->z = 0.0f;
-    // this->x = (float)x / 400 - 1;
-    // this->y = (float)-y / 300 + 1;
+    // this->x = 2.0 * x / WIDTH - 1.0;
+    // this->y = 1.0 - 2.0 * y / HEIGHT;
+    this->x = (float)x;
+    this->y = (float)y;
   }
 
   friend std::ostream &operator<<(std::ostream &os, const Point p) {
     os << "(" << p.x << ", " << p.y << ")";
     return os;
   }
-  Point(GLfloat x, GLfloat y) : x(x), y(y), z(0.0f) {}
+  Point(float x, float y) : x(x), y(y), z(0.0f) {}
 };
 #endif

@@ -19,6 +19,7 @@
 #include "Point.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
+#include "Triangle.hpp"
 #include "Window.hpp"
 
 const float toRadians = 3.14159265f / 180.0f;
@@ -40,17 +41,37 @@ int main() {
 
   Line *line_1 = new Line(Point(800, 600), Point(0, 0), *new RGB(0.0, 1.0, 1.0),
                           mainWindow.getShader(0));
-  Line *line_2 = new Line(Point(0, 600), Point(800, 0), *new RGB(1.0, 1.0, 0.0),
-                          mainWindow.getShader(0));
-  Line *line_3 = new Line(Point(795, 0), Point(800, 600),
+
+  Line *line_2 = new Line(Point(-800, -600), Point(0, 0),
+                          *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  Line *line_3 = new Line(Point(-800, 600), Point(0, 0),
                           *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
-  Dot *dot = new Dot(Point(400, 200), *new RGB(1.0, 0.0, 1.0),
-                     mainWindow.getShader(0));
+
+  Line *line_4 = new Line(Point(800, -600), Point(0, 0),
+                          *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+
+  Line *line_5 = new Line(Point(700, -600), Point(680, 600),
+                          *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  Line *line_6 = new Line(Point(-800, 10), Point(800, 0),
+                          *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  Dot *dot =
+      new Dot(Point(0, 300), *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+
+  Triangle *tri =
+      new Triangle(Point(0, 600), Point(-800, -400), Point(800, -400),
+                   *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
 
   mainWindow.addMesh(*line_1);
   mainWindow.addMesh(*line_2);
   mainWindow.addMesh(*line_3);
+  mainWindow.addMesh(*line_4);
+  mainWindow.addMesh(*line_5);
+  mainWindow.addMesh(*line_6);
   mainWindow.addMesh(*dot);
+  mainWindow.addMesh(*tri);
 
   while (!mainWindow.getShouldClose()) {
     glfwPollEvents();
@@ -62,6 +83,7 @@ int main() {
     //    line_1->drawLine();
     //    line_2->drawLine();
     //    line_3->drawLine();
+    //    tri->drawTriangle();
     //    dot->drawDot();
 
     mainWindow.renderAllMeshes();

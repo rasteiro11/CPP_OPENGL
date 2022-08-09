@@ -111,6 +111,9 @@ private:
   GLfloat yChange;
   bool mouseFirstMoved;
 
+  std::vector<Mesh *> meshList;
+  std::vector<Shader> shaderList;
+
   void createCallbacks() {
     glfwSetKeyCallback(mainWindow, handleKeys);
     glfwSetCursorPosCallback(mainWindow, handleMouse);
@@ -145,9 +148,5 @@ private:
     theWindow->lastX = xPos;
     theWindow->lastY = yPos;
   }
-
-private:
-  std::vector<Mesh *> meshList;
-  std::vector<Shader> shaderList;
 };
 #endif

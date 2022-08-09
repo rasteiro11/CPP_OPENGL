@@ -33,8 +33,8 @@ public:
     if (this->size + 3 >= this->length) {
       resize();
     }
-    this->data[this->size++] = p.x;
-    this->data[this->size++] = p.y;
+    this->data[this->size++] = p.x / 800;
+    this->data[this->size++] = p.y / 600;
     this->data[this->size++] = p.z;
   }
   void push(T val) {
