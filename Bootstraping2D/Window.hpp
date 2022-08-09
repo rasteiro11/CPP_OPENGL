@@ -1,8 +1,11 @@
 #ifndef _WINDOW
 #define _WINDOW
+#include "Mesh.hpp"
+#include "Shader.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdio.h>
+#include <vector>
 
 class Window {
 public:
@@ -64,6 +67,17 @@ public:
 
     return 0;
   }
+
+  void pushShader(Shader &shader) { shaderList.push_back(shader); }
+  void addMesh(Mesh &mesh) { meshList.push_back(&mesh); }
+  void renderAllMeshes() {
+    for (auto mesh : meshList) {
+      mesh->RenderMesh();
+    }
+  }
+
+  Shader &getShader(size_t index) { return shaderList[index]; }
+
   GLfloat getBufferWidth() { return bufferWidth; }
   GLfloat getBufferHeight() { return bufferHeight; }
   bool getShouldClose() { return glfwWindowShouldClose(mainWindow); }
@@ -101,6 +115,7 @@ private:
     glfwSetKeyCallback(mainWindow, handleKeys);
     glfwSetCursorPosCallback(mainWindow, handleMouse);
   }
+
   static void handleKeys(GLFWwindow *window, int key, int code, int action,
                          int mode) {
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
@@ -130,5 +145,9 @@ private:
     theWindow->lastX = xPos;
     theWindow->lastY = yPos;
   }
+
+private:
+  std::vector<Mesh *> meshList;
+  std::vector<Shader> shaderList;
 };
 #endif

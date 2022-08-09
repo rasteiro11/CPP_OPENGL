@@ -18,6 +18,13 @@ public:
     // uniformColorGreen = 0;
     // uniformColorBlue = 0;
   }
+  Shader(const char *vertexLocation, const char *fragmentLocation) {
+    shaderID = 0;
+    uniformModel = 0;
+    uniformProjection = 0;
+    uniformColorVec = 0;
+    CreateFromFiles(vertexLocation, fragmentLocation);
+  }
   void CreateFromString(const char *vertexCode, const char *fragmentCode) {
     CompileShader(vertexCode, fragmentCode);
   }
