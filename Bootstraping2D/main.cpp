@@ -12,6 +12,7 @@
 //#include <glm/gtc/type_ptr.hpp>
 
 #include "Buffer/Buffer.hpp"
+#include "Circle.hpp"
 #include "Dot.hpp"
 #include "Line.hpp"
 #include "Mesh.hpp"
@@ -64,6 +65,9 @@ int main() {
       new Triangle(Point(0, 600), Point(-800, -400), Point(800, -400),
                    *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
 
+  Circle *circle = new Circle(Point(0, 0), 200, *new RGB(1.0, 1.0, 0.0),
+                              mainWindow.getShader(0));
+
   mainWindow.addMesh(*line_1);
   mainWindow.addMesh(*line_2);
   mainWindow.addMesh(*line_3);
@@ -72,6 +76,7 @@ int main() {
   mainWindow.addMesh(*line_6);
   mainWindow.addMesh(*dot);
   mainWindow.addMesh(*tri);
+  mainWindow.addMesh(*circle);
 
   while (!mainWindow.getShouldClose()) {
     glfwPollEvents();

@@ -1,5 +1,6 @@
 #ifndef _WINDOW
 #define _WINDOW
+#include "Config.hpp"
 #include "Mesh.hpp"
 #include "Shader.hpp"
 #include <GL/glew.h>

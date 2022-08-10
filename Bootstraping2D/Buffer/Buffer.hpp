@@ -1,5 +1,6 @@
 #ifndef _BUFFER
 #define _BUFFER
+#include "../Config.hpp"
 #include "../Point.hpp"
 #include <cstddef>
 #include <iostream>
@@ -33,8 +34,8 @@ public:
     if (this->size + 3 >= this->length) {
       resize();
     }
-    this->data[this->size++] = p.x / 800;
-    this->data[this->size++] = p.y / 600;
+    this->data[this->size++] = p.x / Config::WIDTH;
+    this->data[this->size++] = p.y / Config::HEIGHT;
     this->data[this->size++] = p.z;
   }
   void push(T val) {

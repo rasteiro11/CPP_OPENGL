@@ -7,8 +7,8 @@
 #include <string>
 class Point {
 public:
-  static const int WIDTH = 800;
-  static const int HEIGHT = 600;
+  // static const int WIDTH = 800;
+  // static const int HEIGHT = 600;
   GLfloat x, y, z;
   Point() : x(0.0f), y(0.0f), z(0.0f) {}
   Point(int x, int y) : x(x), y(y), z(0.0f) {
