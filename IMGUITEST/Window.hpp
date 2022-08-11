@@ -12,6 +12,7 @@
 #include <vector>
 
 class Window {
+  const char *glsl_version = "#version 330";
 
 public:
   Window() {
@@ -54,7 +55,6 @@ public:
     glfwSwapInterval(1);
 
     // IMGUI_CHECKVERSION();
-    // ImGui::CreateContext();
     // ImGuiIO &io = ImGui::GetIO();
     //(void)io;
 
@@ -83,11 +83,43 @@ public:
 
     return 0;
   }
-  // void InitImgui() {
-  //  ImGui_ImplOpenGL3_NewFrame();
-  //  ImGui_ImplGlfw_NewFrame();
-  //  ImGui::NewFrame();
-  //}
+
+  void loop() {
+    bool show_demo_window = true;
+    while (!getShouldClose()) {
+      glUseProgram(0);
+      ImGui_ImplOpenGL3_NewFrame();
+      ImGui_ImplGlfw_NewFrame();
+      ImGui::NewFrame();
+
+      if (1) {
+        ImGui::ShowDemoWindow(&show_demo_window);
+      }
+
+      glfwPollEvents();
+
+      glViewport(0, 0, 800, 600);
+      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+      getShader(0).UseShader();
+
+      //    line_1->drawLine();
+      //    line_2->drawLine();
+      //    line_3->drawLine();
+      //    tri->drawTriangle();
+      //    dot->drawDot();
+      //
+
+      ImGui::Render();
+
+      renderAllMeshes();
+
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+      swapBuffers();
+    }
+  }
 
   void pushShader(Shader &shader) { shaderList.push_back(shader); }
   void addMesh(Mesh &mesh) { meshList.push_back(&mesh); }
@@ -115,6 +147,7 @@ public:
   }
   void swapBuffers() { glfwSwapBuffers(mainWindow); }
   ~Window() {
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
