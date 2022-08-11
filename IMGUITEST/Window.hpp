@@ -75,6 +75,15 @@ public:
       return 1;
     }
 
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(mainWindow, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
     glEnable(GL_DEPTH_TEST);
 
     glViewport(0, 0, bufferWidth, bufferHeight);
@@ -93,7 +102,7 @@ public:
       ImGui::NewFrame();
 
       if (1) {
-        ImGui::ShowDemoWindow(&show_demo_window);
+        ImGui::ShowMetricsWindow(&show_demo_window);
       }
 
       glfwPollEvents();

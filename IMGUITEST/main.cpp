@@ -82,15 +82,6 @@ int main() {
   mainWindow.addMesh(*tri);
   mainWindow.addMesh(*circle);
 
-  ImGui::CreateContext();
-  ImGuiIO &io = ImGui::GetIO();
-  (void)io;
-
-  ImGui::StyleColorsDark();
-
-  ImGui_ImplGlfw_InitForOpenGL(mainWindow.mainWindow, true);
-  ImGui_ImplOpenGL3_Init("#version 330");
-
   mainWindow.loop();
 
   //  ImGui_ImplOpenGL3_Shutdown();
