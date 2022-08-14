@@ -1,7 +1,9 @@
 #ifndef _WINDOW
 #define _WINDOW
 #include "Config.hpp"
+#include "Dot.hpp"
 #include "Mesh.hpp"
+#include "RGB.hpp"
 #include "Shader.hpp"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -101,9 +103,15 @@ public:
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
-      if (1) {
-        ImGui::ShowMetricsWindow(&show_demo_window);
-      }
+      ImGui::Text("Hello, world %d", 123);
+      int curr_item;
+      const char *const items[] = {"TEST1", "TEST2", "TEST3"};
+      ImGui::ListBox("TESTING", &curr_item, items, 3, -1);
+      // if (ImGui::Button("Save")) {
+      //  // do stuff
+      //}
+      // ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+      // ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 
       glfwPollEvents();
 
@@ -183,7 +191,14 @@ private:
 
   void createCallbacks() {
     glfwSetKeyCallback(mainWindow, handleKeys);
-    glfwSetCursorPosCallback(mainWindow, handleMouse);
+    glfwSetMouseButtonCallback(mainWindow, mouse_button_callback);
+    glfwSetWindowSizeCallback(mainWindow, windowSizeChange);
+    //   glfwSetCursorPosCallback(mainWindow, handleMouse);
+  }
+
+  static void windowSizeChange(GLFWwindow *window, int width, int height) {
+    std::cout << "WIDTH: " << width << std::endl;
+    std::cout << "HEIGHT: " << height << std::endl;
   }
 
   static void handleKeys(GLFWwindow *window, int key, int code, int action,
@@ -202,18 +217,30 @@ private:
       }
     }
   }
-  static void handleMouse(GLFWwindow *window, double xPos, double yPos) {
-    Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
-    if (theWindow->mouseFirstMoved) {
-      theWindow->lastX = xPos;
-      theWindow->lastY = yPos;
-      theWindow->mouseFirstMoved = false;
+  static void mouse_button_callback(GLFWwindow *window, int button, int action,
+                                    int mods) {
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+      double xPos, yPos;
+      glfwGetCursorPos(window, &xPos, &yPos);
+      std::cout << "xPos: " << xPos << std::endl;
+      std::cout << "yPos: " << yPos << std::endl;
     }
-    theWindow->xChange = xPos - theWindow->lastX;
-    theWindow->yChange = theWindow->lastY - yPos;
-
-    theWindow->lastX = xPos;
-    theWindow->lastY = yPos;
+    std::cout << "CLICKED" << std::endl;
   }
+  // static void handleMouse(GLFWwindow *window, double xPos, double yPos) {
+  //  Window *theWindow = static_cast<Window
+  //  *>(glfwGetWindowUserPointer(window)); std::cout << "xPos: " << xPos <<
+  //  std::endl; std::cout << "yPos: " << yPos << std::endl;
+  //  // if (theWindow->mouseFirstMoved) {
+  //  //  theWindow->lastX = xPos;
+  //  //  theWindow->lastY = yPos;
+  //  //  theWindow->mouseFirstMoved = false;
+  //  //}
+  //  // theWindow->xChange = xPos - theWindow->lastX;
+  //  // theWindow->yChange = theWindow->lastY - yPos;
+
+  //  // theWindow->lastX = xPos;
+  //  // theWindow->lastY = yPos;
+  //}
 };
 #endif
