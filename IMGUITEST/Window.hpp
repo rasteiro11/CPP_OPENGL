@@ -1,7 +1,10 @@
 #ifndef _WINDOW
 #define _WINDOW
+
 #include "Config.hpp"
 #include "Dot.hpp"
+#include "DrawMode.hpp"
+#include "Line.hpp"
 #include "Mesh.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
@@ -28,6 +31,7 @@ public:
   Window(GLint windowWidth, GLint windowHeight) {
     width = windowWidth;
     height = windowHeight;
+    drawMode = DrawMode::POINT;
     for (size_t i = 0; i < 1024; i++) {
       keys[i] = 0;
     }
@@ -99,19 +103,17 @@ public:
     bool show_demo_window = true;
     while (!getShouldClose()) {
       glUseProgram(0);
+
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
-      ImGui::Text("Hello, world %d", 123);
-      int curr_item;
-      const char *const items[] = {"TEST1", "TEST2", "TEST3"};
-      ImGui::ListBox("TESTING", &curr_item, items, 3, -1);
-      // if (ImGui::Button("Save")) {
-      //  // do stuff
-      //}
+      // ImGui::Text("Hello, world %d", 123);
+      // int curr_item;
+      // const char *const items[] = {"TEST1", "TEST2", "TEST3"};
+      // ImGui::ListBox("TESTING", &curr_item, items, 3, -1);
+      selectDrawMode();
       // ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-      // ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 
       glfwPollEvents();
 
@@ -130,6 +132,7 @@ public:
 
       ImGui::Render();
 
+      checkForCompleteLine();
       renderAllMeshes();
 
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -180,11 +183,15 @@ private:
 
   bool keys[1024];
 
+  std::vector<Point *> tempPoints;
+
   GLfloat lastX;
   GLfloat lastY;
   GLfloat xChange;
   GLfloat yChange;
   bool mouseFirstMoved;
+
+  DrawMode drawMode;
 
   std::vector<Mesh *> meshList;
   std::vector<Shader> shaderList;
@@ -194,6 +201,31 @@ private:
     glfwSetMouseButtonCallback(mainWindow, mouse_button_callback);
     glfwSetWindowSizeCallback(mainWindow, windowSizeChange);
     //   glfwSetCursorPosCallback(mainWindow, handleMouse);
+  }
+
+  void checkForCompleteLine() {
+
+    if (tempPoints.size() >= 2) {
+      std::cout << "SIZE ???" << tempPoints.size() << std::endl;
+      std::cout << "FINALLY SHOULD RENDER" << std::endl;
+      for (auto item : tempPoints) {
+        std::cout << *item << std::endl;
+      }
+      addMesh(*new Line(*tempPoints[0], *tempPoints[1], *new RGB(1.0, 1.0, 0.0),
+                        getShader(0)));
+      tempPoints.clear();
+    }
+  }
+
+  void selectDrawMode() {
+    if (ImGui::Button("Point")) {
+      drawMode = DrawMode::POINT;
+      std::cout << "POINT MODE" << std::endl;
+    }
+    if (ImGui::Button("Line")) {
+      drawMode = DrawMode::LINE;
+      std::cout << "LINE MODE" << std::endl;
+    }
   }
 
   static void windowSizeChange(GLFWwindow *window, int width, int height) {
@@ -223,14 +255,21 @@ private:
   }
   static void mouse_button_callback(GLFWwindow *window, int button, int action,
                                     int mods) {
+    Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
       double xPos, yPos;
       glfwGetCursorPos(window, &xPos, &yPos);
-      std::cout << "xPos: " << xPos << std::endl;
-      std::cout << "yPos: " << yPos << std::endl;
+      switch (theWindow->drawMode) {
+      case DrawMode::LINE:
+        theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
+      case DrawMode::POINT:;
+        theWindow->addMesh(*new Dot(Point((float)xPos, (float)yPos),
+                                    *new RGB(1.0, 1.0, 0.0),
+                                    theWindow->getShader(0)));
+      }
     }
-    std::cout << "CLICKED" << std::endl;
   }
+
   // static void handleMouse(GLFWwindow *window, double xPos, double yPos) {
   //  Window *theWindow = static_cast<Window
   //  *>(glfwGetWindowUserPointer(window)); std::cout << "xPos: " << xPos <<
