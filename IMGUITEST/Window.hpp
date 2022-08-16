@@ -17,14 +17,14 @@ class Window {
   const char *glsl_version = "#version 330";
 
 public:
-  Window() {
-    width = 800;
-    height = 600;
+  // Window() {
+  //  width = 800;
+  //  height = 600;
 
-    for (size_t i = 0; i < 1024; i++) {
-      keys[i] = 0;
-    }
-  }
+  //  for (size_t i = 0; i < 1024; i++) {
+  //    keys[i] = 0;
+  //  }
+  //}
   Window(GLint windowWidth, GLint windowHeight) {
     width = windowWidth;
     height = windowHeight;
@@ -115,7 +115,7 @@ public:
 
       glfwPollEvents();
 
-      glViewport(0, 0, 800, 600);
+      glViewport(0, 0, bufferWidth, bufferHeight);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -197,6 +197,10 @@ private:
   }
 
   static void windowSizeChange(GLFWwindow *window, int width, int height) {
+    std::cout << "RESIZED" << std::endl;
+    Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
+    theWindow->bufferWidth = width;
+    theWindow->bufferHeight = height;
     std::cout << "WIDTH: " << width << std::endl;
     std::cout << "HEIGHT: " << height << std::endl;
   }

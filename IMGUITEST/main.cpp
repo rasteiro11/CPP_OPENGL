@@ -4,6 +4,7 @@
 #include <string.h>
 #include <vector>
 
+#include "Config.hpp"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -39,49 +40,86 @@ static const char *fShader = "Shaders/shader.frag";
 
 int main() {
 
-  Window mainWindow = Window();
+  Window mainWindow = Window(Config::WIDTH, Config::HEIGHT);
   mainWindow.Initialize();
 
   mainWindow.pushShader(*new Shader(vShader, fShader));
 
-  Line *line_1 = new Line(Point(800, 600), Point(0, 0), *new RGB(0.0, 1.0, 1.0),
-                          mainWindow.getShader(0));
+  // Line *line_1 = new Line(Point(800, 600), Point(0, 0), *new
+  // RGB(0.0, 1.0, 1.0),
+  //                        mainWindow.getShader(0));
 
-  Line *line_2 = new Line(Point(-800, -600), Point(0, 0),
+  // Line *line_2 = new Line(Point(-800, -600), Point(0, 0),
+  //                        *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  // Line *line_3 = new Line(Point(-800, 600), Point(0, 0),
+  //                        *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+
+  // Line *line_4 = new Line(Point(800, -600), Point(0, 0),
+  //                        *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+
+  // Line *line_5 = new Line(Point(700, -600), Point(680, 600),
+  //                        *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  // Line *line_6 = new Line(Point(-800, 10), Point(800, 0),
+  //                        *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  // Dot *dot =
+  //    new Dot(Point(0, 300), *new RGB(1.0, 0.0, 1.0),
+  //    mainWindow.getShader(0));
+
+  // Triangle *tri =
+  //    new Triangle(Point(0, 600), Point(-800, -400), Point(800, -400),
+  //                 *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  // Circle *circle = new Circle(Point(0, 0), 200, *new RGB(1.0, 1.0, 0.0),
+  //                            mainWindow.getShader(0));
+  int width, height;
+  glfwGetWindowSize(mainWindow.mainWindow, &width, &height);
+
+  Line *line_1 = new Line(Point(width, height), Point(0, 0),
+                          *new RGB(0.0, 1.0, 1.0), mainWindow.getShader(0));
+
+  Line *line_2 = new Line(Point(width / 2, 0), Point(width / 2, height),
                           *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
 
-  Line *line_3 = new Line(Point(-800, 600), Point(0, 0),
-                          *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+  Triangle *tri = new Triangle(Point(width / 2, 0), Point(width, height / 2),
+                               Point(0, height / 2), *new RGB(1.0, 1.0, 0.0),
+                               mainWindow.getShader(0));
 
-  Line *line_4 = new Line(Point(800, -600), Point(0, 0),
-                          *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+  // Line *line_3 = new Line(Point(-800, 600), Point(0, 0),
+  //                        *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
 
-  Line *line_5 = new Line(Point(700, -600), Point(680, 600),
-                          *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
+  // Line *line_4 = new Line(Point(800, -600), Point(0, 0),
+  //                        *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
 
-  Line *line_6 = new Line(Point(-800, 10), Point(800, 0),
-                          *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
+  // Line *line_5 = new Line(Point(700, -600), Point(680, 600),
+  //                        *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
 
-  Dot *dot =
-      new Dot(Point(0, 300), *new RGB(1.0, 0.0, 1.0), mainWindow.getShader(0));
+  // Line *line_6 = new Line(Point(-800, 10), Point(800, 0),
+  //                        *new RGB(0.0, 1.0, 0.0), mainWindow.getShader(0));
 
-  Triangle *tri =
-      new Triangle(Point(0, 600), Point(-800, -400), Point(800, -400),
-                   *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
+  // Dot *dot =
+  //    new Dot(Point(0, 300), *new RGB(1.0, 0.0, 1.0),
+  //    mainWindow.getShader(0));
 
-  Circle *circle = new Circle(Point(0, 0), 200, *new RGB(1.0, 1.0, 0.0),
-                              mainWindow.getShader(0));
+  // Triangle *tri =
+  //    new Triangle(Point(0, 600), Point(-800, -400), Point(800, -400),
+  //                 *new RGB(1.0, 1.0, 0.0), mainWindow.getShader(0));
+
+  // Circle *circle = new Circle(Point(0, 0), 200, *new RGB(1.0, 1.0, 0.0),
+  //                            mainWindow.getShader(0));
 
   mainWindow.addMesh(*line_1);
   mainWindow.addMesh(*line_2);
-  mainWindow.addMesh(*line_3);
-  mainWindow.addMesh(*line_4);
-  mainWindow.addMesh(*line_5);
-  mainWindow.addMesh(*line_6);
-  mainWindow.addMesh(*dot);
+  //  mainWindow.addMesh(*line_3);
+  //  mainWindow.addMesh(*line_4);
+  //  mainWindow.addMesh(*line_5);
+  //  mainWindow.addMesh(*line_6);
+  //  mainWindow.addMesh(*dot);
   mainWindow.addMesh(*tri);
-  mainWindow.addMesh(*circle);
-
+  //  mainWindow.addMesh(*circle);
+  //
   mainWindow.loop();
 
   //  ImGui_ImplOpenGL3_Shutdown();

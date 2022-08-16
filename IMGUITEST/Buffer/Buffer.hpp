@@ -34,8 +34,8 @@ public:
     if (this->size + 3 >= this->length) {
       resize();
     }
-    this->data[this->size++] = p.x / Config::WIDTH;
-    this->data[this->size++] = p.y / Config::HEIGHT;
+    this->data[this->size++] = 2.0 * p.x / Config::WIDTH - 1.0;
+    this->data[this->size++] = 1.0 - 2.0 * p.y / Config::HEIGHT;
     this->data[this->size++] = p.z;
   }
   void push(T val) {
