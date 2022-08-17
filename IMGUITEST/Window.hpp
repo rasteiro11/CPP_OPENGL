@@ -110,7 +110,7 @@ public:
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
-      ImGui::Text("%s", getDrawMode().c_str());
+      ImGui::Text("DrawingMode: %s", getDrawMode().c_str());
       // int curr_item;
       // const char *const items[] = {"TEST1", "TEST2", "TEST3"};
       // ImGui::ListBox("TESTING", &curr_item, items, 3, -1);
