@@ -14,6 +14,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdio.h>
+#include <string>
 #include <vector>
 
 class Window {
@@ -48,14 +49,15 @@ public:
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    mainWindow = glfwCreateWindow(width, height, "Test Window", NULL, NULL);
+    mainWindow = glfwCreateWindow(Config::width, Config::height, "Test Window",
+                                  NULL, NULL);
     if (!mainWindow) {
       printf("GLFW window creation failed!");
       glfwTerminate();
       return 1;
     }
 
-    glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
+    glfwGetFramebufferSize(mainWindow, &Config::width, &Config::height);
 
     glfwMakeContextCurrent(mainWindow);
     glfwSwapInterval(1);
@@ -92,7 +94,7 @@ public:
 
     glEnable(GL_DEPTH_TEST);
 
-    glViewport(0, 0, bufferWidth, bufferHeight);
+    glViewport(0, 0, Config::width, Config::height);
 
     glfwSetWindowUserPointer(mainWindow, this);
 
@@ -108,7 +110,7 @@ public:
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
-      // ImGui::Text("Hello, world %d", 123);
+      ImGui::Text("%s", getDrawMode().c_str());
       // int curr_item;
       // const char *const items[] = {"TEST1", "TEST2", "TEST3"};
       // ImGui::ListBox("TESTING", &curr_item, items, 3, -1);
@@ -117,18 +119,11 @@ public:
 
       glfwPollEvents();
 
-      glViewport(0, 0, bufferWidth, bufferHeight);
+      glViewport(0, 0, Config::width, Config::height);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       getShader(0).UseShader();
-
-      //    line_1->drawLine();
-      //    line_2->drawLine();
-      //    line_3->drawLine();
-      //    tri->drawTriangle();
-      //    dot->drawDot();
-      //
 
       ImGui::Render();
 
@@ -200,23 +195,23 @@ private:
     glfwSetKeyCallback(mainWindow, handleKeys);
     glfwSetMouseButtonCallback(mainWindow, mouse_button_callback);
     glfwSetWindowSizeCallback(mainWindow, windowSizeChange);
-    //   glfwSetCursorPosCallback(mainWindow, handleMouse);
   }
 
   void checkForCompleteLine() {
-
     if (tempPoints.size() >= 2) {
-      std::cout << "SIZE ???" << tempPoints.size() << std::endl;
-      std::cout << "FINALLY SHOULD RENDER" << std::endl;
-      for (auto item : tempPoints) {
-        std::cout << *item << std::endl;
-      }
       addMesh(*new Line(*tempPoints[0], *tempPoints[1], *new RGB(1.0, 1.0, 0.0),
                         getShader(0)));
       tempPoints.clear();
     }
   }
-
+  std::string getDrawMode() {
+    switch (drawMode) {
+    case DrawMode::POINT:
+      return std::string("Point");
+    case DrawMode::LINE:
+      return std::string("Line");
+    }
+  }
   void selectDrawMode() {
     if (ImGui::Button("Point")) {
       drawMode = DrawMode::POINT;
@@ -231,10 +226,9 @@ private:
   static void windowSizeChange(GLFWwindow *window, int width, int height) {
     std::cout << "RESIZED" << std::endl;
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
-    theWindow->bufferWidth = width;
-    theWindow->bufferHeight = height;
-    std::cout << "WIDTH: " << width << std::endl;
-    std::cout << "HEIGHT: " << height << std::endl;
+    glfwGetWindowSize(theWindow->mainWindow, &Config::width, &Config::height);
+    theWindow->bufferWidth = Config::width;
+    theWindow->bufferHeight = Config::height;
   }
 
   static void handleKeys(GLFWwindow *window, int key, int code, int action,
@@ -262,28 +256,14 @@ private:
       switch (theWindow->drawMode) {
       case DrawMode::LINE:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
+        break;
       case DrawMode::POINT:;
         theWindow->addMesh(*new Dot(Point((float)xPos, (float)yPos),
                                     *new RGB(1.0, 1.0, 0.0),
                                     theWindow->getShader(0)));
+        break;
       }
     }
   }
-
-  // static void handleMouse(GLFWwindow *window, double xPos, double yPos) {
-  //  Window *theWindow = static_cast<Window
-  //  *>(glfwGetWindowUserPointer(window)); std::cout << "xPos: " << xPos <<
-  //  std::endl; std::cout << "yPos: " << yPos << std::endl;
-  //  // if (theWindow->mouseFirstMoved) {
-  //  //  theWindow->lastX = xPos;
-  //  //  theWindow->lastY = yPos;
-  //  //  theWindow->mouseFirstMoved = false;
-  //  //}
-  //  // theWindow->xChange = xPos - theWindow->lastX;
-  //  // theWindow->yChange = theWindow->lastY - yPos;
-
-  //  // theWindow->lastX = xPos;
-  //  // theWindow->lastY = yPos;
-  //}
 };
 #endif
