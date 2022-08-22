@@ -22,10 +22,17 @@
 
 class Window {
   const char *glsl_version = "#version 330";
+  static int polyVert;
 
 public:
-  GLFWwindow *mainWindow;
+  // Window() {
+  //  width = 800;
+  //  height = 600;
 
+  //  for (size_t i = 0; i < 1024; i++) {
+  //    keys[i] = 0;
+  //  }
+  //}
   Window(GLint windowWidth, GLint windowHeight) {
     width = windowWidth;
     height = windowHeight;
@@ -118,7 +125,8 @@ public:
 
       getShader(0).UseShader();
       selectDrawMode();
-      optionSelectors();
+      // polygonal line slider
+      ImGui::SliderInt("Select Polygonal Vertices", &polyVert, 1, 5);
 
       ImGui::Render();
 
@@ -132,14 +140,6 @@ public:
 
       swapBuffers();
     }
-  }
-
-  void optionSelectors() {
-    if (drawMode == DrawMode::POLYGON || drawMode == DrawMode::POLYGONALCHAIN) {
-      ImGui::SliderInt("Select Polygonal Vertices", &polyVert, Config::polyMin,
-                       Config::polyMax);
-    }
-    ImGui::ColorPicker3("Color Selector", floatColorArr);
   }
 
   void pushShader(Shader &shader) { shaderList.push_back(shader); }
@@ -176,16 +176,15 @@ public:
     glfwTerminate();
   }
 
+  GLFWwindow *mainWindow;
+
 private:
   GLint width, height;
   GLint bufferWidth, bufferHeight;
-  int polyVert = Config::polyMin;
 
   bool keys[1024];
 
   std::vector<Point *> tempPoints;
-  RGB *tempColor;
-  float *floatColorArr = new float[]{1.0, 1.0, 0.0};
 
   GLfloat lastX;
   GLfloat lastY;
@@ -207,10 +206,8 @@ private:
   void checkForCompleteLine() {
     if (drawMode == DrawMode::LINE) {
       if (tempPoints.size() >= 2) {
-        addMesh(*new Line(
-            *tempPoints[0], *tempPoints[1],
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new Line(*tempPoints[0], *tempPoints[1],
+                          *new RGB(1.0, 1.0, 0.0), getShader(0)));
         tempPoints.clear();
       }
     }
@@ -219,10 +216,8 @@ private:
   void checkForCompletePolygon(int n_vert) {
     if (drawMode == DrawMode::POLYGON) {
       if (tempPoints.size() >= polyVert) {
-        addMesh(*new Polygon(
-            tempPoints,
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(
+            *new Polygon(tempPoints, *new RGB(1.0, 1.0, 0.0), getShader(0)));
         tempPoints.clear();
       }
     }
@@ -232,10 +227,8 @@ private:
     if (drawMode == DrawMode::POLYGONALCHAIN) {
       if (tempPoints.size() >= polyVert) {
         // should add poly chain mesh
-        addMesh(*new PolygonalChain(
-            tempPoints,
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new PolygonalChain(tempPoints, *new RGB(1.0, 1.0, 0.0),
+                                    getShader(0)));
         tempPoints.clear();
       }
     }
@@ -244,10 +237,8 @@ private:
   void checkForCompleteRect() {
     if (drawMode == DrawMode::RECTANGLE) {
       if (tempPoints.size() >= 2) {
-        addMesh(*new Rectangle(
-            *tempPoints[0], *tempPoints[1],
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new Rectangle(*tempPoints[0], *tempPoints[1],
+                               *new RGB(1.0, 1.0, 0.0), getShader(0)));
         tempPoints.clear();
       }
     }
@@ -323,7 +314,6 @@ private:
   static void mouse_button_callback(GLFWwindow *window, int button, int action,
                                     int mods) {
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
-    float *floatColorArr = theWindow->floatColorArr;
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
       double xPos, yPos;
       glfwGetCursorPos(window, &xPos, &yPos);
@@ -332,10 +322,9 @@ private:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
         break;
       case DrawMode::POINT:
-        theWindow->addMesh(*new Dot(
-            Point((float)xPos, (float)yPos),
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            theWindow->getShader(0)));
+        theWindow->addMesh(*new Dot(Point((float)xPos, (float)yPos),
+                                    *new RGB(1.0, 1.0, 0.0),
+                                    theWindow->getShader(0)));
         break;
       case DrawMode::RECTANGLE:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
@@ -350,5 +339,5 @@ private:
     }
   }
 };
-// int Window::polyVert = Config::polyMin;
+int Window::polyVert = 0;
 #endif
