@@ -108,6 +108,8 @@ public:
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
+      tempColor = new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]);
+
       ImGui::Text("DrawingMode: %s", getDrawMode().c_str());
 
       glfwPollEvents();
@@ -185,7 +187,7 @@ private:
 
   std::vector<Point *> tempPoints;
   RGB *tempColor;
-  float *floatColorArr = new float[]{1.0, 1.0, 0.0};
+  float *floatColorArr = new float[3];
 
   GLfloat lastX;
   GLfloat lastY;
@@ -207,10 +209,8 @@ private:
   void checkForCompleteLine() {
     if (drawMode == DrawMode::LINE) {
       if (tempPoints.size() >= 2) {
-        addMesh(*new Line(
-            *tempPoints[0], *tempPoints[1],
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new Line(*tempPoints[0], *tempPoints[1], *tempColor,
+                          getShader(0)));
         tempPoints.clear();
       }
     }
@@ -219,10 +219,7 @@ private:
   void checkForCompletePolygon(int n_vert) {
     if (drawMode == DrawMode::POLYGON) {
       if (tempPoints.size() >= polyVert) {
-        addMesh(*new Polygon(
-            tempPoints,
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new Polygon(tempPoints, *tempColor, getShader(0)));
         tempPoints.clear();
       }
     }
@@ -232,10 +229,7 @@ private:
     if (drawMode == DrawMode::POLYGONALCHAIN) {
       if (tempPoints.size() >= polyVert) {
         // should add poly chain mesh
-        addMesh(*new PolygonalChain(
-            tempPoints,
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new PolygonalChain(tempPoints, *tempColor, getShader(0)));
         tempPoints.clear();
       }
     }
@@ -244,10 +238,8 @@ private:
   void checkForCompleteRect() {
     if (drawMode == DrawMode::RECTANGLE) {
       if (tempPoints.size() >= 2) {
-        addMesh(*new Rectangle(
-            *tempPoints[0], *tempPoints[1],
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            getShader(0)));
+        addMesh(*new Rectangle(*tempPoints[0], *tempPoints[1], *tempColor,
+                               getShader(0)));
         tempPoints.clear();
       }
     }
@@ -332,10 +324,9 @@ private:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
         break;
       case DrawMode::POINT:
-        theWindow->addMesh(*new Dot(
-            Point((float)xPos, (float)yPos),
-            *new RGB(floatColorArr[0], floatColorArr[1], floatColorArr[2]),
-            theWindow->getShader(0)));
+        theWindow->addMesh(*new Dot(Point((float)xPos, (float)yPos),
+                                    *theWindow->tempColor,
+                                    theWindow->getShader(0)));
         break;
       case DrawMode::RECTANGLE:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
