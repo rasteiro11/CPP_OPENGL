@@ -1,6 +1,7 @@
 #ifndef _WINDOW
 #define _WINDOW
 
+#include "Circle.hpp"
 #include "Config.hpp"
 #include "Dot.hpp"
 #include "DrawMode.hpp"
@@ -100,7 +101,6 @@ public:
   }
 
   void loop() {
-    bool show_demo_window = true;
     while (!getShouldClose()) {
       glUseProgram(0);
 
@@ -140,6 +140,10 @@ public:
     if (drawMode == DrawMode::POLYGON || drawMode == DrawMode::POLYGONALCHAIN) {
       ImGui::SliderInt("Select Polygonal Vertices", &polyVert, Config::polyMin,
                        Config::polyMax);
+    }
+    if (drawMode == DrawMode::CIRCLE) {
+      ImGui::SliderInt("Radius Size", &radius, Config::radiusMin,
+                       Config::radiusMax);
     }
     ImGui::ColorPicker3("Color Selector", floatColorArr);
   }
@@ -188,6 +192,7 @@ private:
   std::vector<Point *> tempPoints;
   RGB *tempColor;
   float *floatColorArr = new float[3];
+  int radius = Config::radiusMin;
 
   GLfloat lastX;
   GLfloat lastY;
@@ -228,7 +233,6 @@ private:
   void checkForCompletePolygonalChain(int n_vert) {
     if (drawMode == DrawMode::POLYGONALCHAIN) {
       if (tempPoints.size() >= polyVert) {
-        // should add poly chain mesh
         addMesh(*new PolygonalChain(tempPoints, *tempColor, getShader(0)));
         tempPoints.clear();
       }
@@ -257,6 +261,10 @@ private:
       return std::string("Polygonal Chain");
     case DrawMode::POLYGON:
       return std::string("Polygon");
+    case DrawMode::CIRCLE:
+      return std::string("Circle");
+    default:
+      break;
     }
   }
 
@@ -284,6 +292,11 @@ private:
     if (ImGui::Button("Polygon")) {
       drawMode = DrawMode::POLYGON;
       std::cout << "POLYGON MODE" << std::endl;
+      tempPoints.clear();
+    }
+    if (ImGui::Button("Circle")) {
+      drawMode = DrawMode::CIRCLE;
+      std::cout << "CIRCLE MODE" << std::endl;
       tempPoints.clear();
     }
   }
@@ -315,7 +328,6 @@ private:
   static void mouse_button_callback(GLFWwindow *window, int button, int action,
                                     int mods) {
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
-    float *floatColorArr = theWindow->floatColorArr;
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
       double xPos, yPos;
       glfwGetCursorPos(window, &xPos, &yPos);
@@ -336,6 +348,11 @@ private:
         break;
       case DrawMode::POLYGON:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
+        break;
+      case DrawMode::CIRCLE:
+        theWindow->addMesh(*new Circle(Point((float)xPos, (float)yPos),
+                                       theWindow->radius, *theWindow->tempColor,
+                                       theWindow->getShader(0)));
         break;
       }
     }

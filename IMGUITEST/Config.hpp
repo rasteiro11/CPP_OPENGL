@@ -12,6 +12,8 @@ public:
   static int height;
   static int polyMax;
   static int polyMin;
+  static int radiusMax;
+  static int radiusMin;
   static Config *getInstance() {
     if (!config) {
       config = new Config;
@@ -29,5 +31,7 @@ int Config::width = Config::WIDTH;
 int Config::height = Config::HEIGHT;
 int Config::polyMax = 5;
 int Config::polyMin = 3;
+int Config::radiusMax = Config::width;
+int Config::radiusMin = 50;
 
 #endif
