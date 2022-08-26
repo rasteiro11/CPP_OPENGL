@@ -264,7 +264,7 @@ private:
     case DrawMode::CIRCLE:
       return std::string("Circle");
     default:
-      break;
+      return std::string("SOMETHING IS BROKEN");
     }
   }
 

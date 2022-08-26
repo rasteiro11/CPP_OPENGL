@@ -31,7 +31,6 @@ public:
                               Buffer<unsigned int> &indexes) {
     float dy = (point2.y - point1.y);
     float dx = (point2.x - point1.x);
-    float m = dy / dx;
     float step = (std::abs(dx) >= std::abs(dy)) ? std::abs(dx) : std::abs(dy);
     dx /= step;
     dy /= step;
