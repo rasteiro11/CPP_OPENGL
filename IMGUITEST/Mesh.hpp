@@ -61,6 +61,13 @@ public:
     }
     indexCount = 0;
   }
+
+  void setMeshColor(float r, float g, float b) {
+    this->uniform_color_vec[0] = r;
+    this->uniform_color_vec[1] = g;
+    this->uniform_color_vec[2] = b;
+  }
+
   ~Mesh() { ClearMesh(); }
 
 protected:

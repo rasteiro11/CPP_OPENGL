@@ -7,6 +7,7 @@
 #include "Point.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
+#include <cmath>
 
 class Line : public MeshPoint, public Collidable {
   // static constexpr float step = 0.001;
@@ -29,7 +30,26 @@ public:
 
   void drawLine() { RenderMesh(); }
 
-  bool hasCollided(Point p) override {}
+  float getSlope() {
+    if (p1.x == p2.x) {
+      return 0;
+    } else {
+      return (p1.y - p2.y) / (p1.x - p2.x);
+    }
+  }
+
+  float getConstant() { return p1.y - (getSlope() * p1.x); }
+
+  bool hasCollided(Point p) override {
+    float y = getSlope() * p.x + getConstant();
+    std::cout << "CLICKED POINT: " << p.y << std::endl;
+    std::cout << "CALCULATED POINT: " << y << std::endl;
+    if (std::abs(y - p.y) < 30) {
+      std::cout << "YOU HAVE CLICKED ON LINE" << std::endl;
+      return true;
+    }
+    return false;
+  }
 
   static void renderNaiveLine(Point point1, Point point2,
                               Buffer<GLfloat> &vertices,

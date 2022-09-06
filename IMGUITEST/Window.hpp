@@ -331,18 +331,30 @@ private:
   }
 
   void checkForCollisions(float xPos, float yPos) {
+    Point clickPoint = Point(xPos, yPos);
     if (this->meshList.size() != 0) {
       for (auto mesh : this->meshList) {
         switch (mesh->getMeshType()) {
         case DrawMode::RECTANGLE: {
 
           Rectangle *rect = static_cast<Rectangle *>(mesh);
-          rect->hasCollided(Point(xPos, yPos));
+          if (rect->hasCollided(clickPoint)) {
+            rect->setMeshColor(1.0, 1.0, 0.0);
+          }
           break;
         }
         case DrawMode::CIRCLE: {
           Circle *circle = static_cast<Circle *>(mesh);
-          circle->hasCollided(Point(xPos, yPos));
+          if (circle->hasCollided(clickPoint)) {
+            circle->setMeshColor(1.0, 1.0, 0.0);
+          }
+          break;
+        }
+        case DrawMode::LINE: {
+          Line *line = static_cast<Line *>(mesh);
+          if (line->hasCollided(clickPoint)) {
+            line->setMeshColor(1.0, 1.0, 0.0);
+          }
           break;
         }
         }
@@ -364,10 +376,9 @@ private:
   static void mouse_button_callback(GLFWwindow *window, int button, int action,
                                     int mods) {
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
+    double xPos, yPos;
+    glfwGetCursorPos(window, &xPos, &yPos);
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-      double xPos, yPos;
-      glfwGetCursorPos(window, &xPos, &yPos);
-      theWindow->checkForCollisions(xPos, yPos);
       switch (theWindow->drawMode) {
       case DrawMode::LINE:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));
@@ -392,6 +403,8 @@ private:
                                        theWindow->getShader(0)));
         break;
       }
+    } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+      theWindow->checkForCollisions(xPos, yPos);
     }
   }
 };
