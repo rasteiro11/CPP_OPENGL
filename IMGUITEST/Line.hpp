@@ -1,6 +1,7 @@
 #ifndef _LINE_TEST
 #define _LINE_TEST
 #include "Buffer/Buffer.hpp"
+#include "DrawMode.hpp"
 #include "MeshPoint.hpp"
 #include "Point.hpp"
 #include "RGB.hpp"
@@ -12,6 +13,7 @@ class Line : public MeshPoint {
 public:
   Line() {}
   Line(Point p1, Point p2, RGB &color, Shader &shader) {
+    this->type = DrawMode::LINE;
     this->p1 = p1;
     this->p2 = p2;
     this->shader = &shader;

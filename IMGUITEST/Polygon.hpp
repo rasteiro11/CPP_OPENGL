@@ -1,5 +1,6 @@
 #ifndef _POLYGON
 #define _POLYGON
+#include "DrawMode.hpp"
 #include "Line.hpp"
 #include "MeshPoint.hpp"
 #include "Point.hpp"
@@ -11,6 +12,7 @@ class Polygon : public PolygonalChain {
 public:
   Polygon(std::vector<Point *> polyChain, RGB &color, Shader &shader)
       : PolygonalChain(polyChain, color, shader) {
+    this->type = DrawMode::POLYGON;
     generatePolygonalConnection(polyChain, color, shader);
     Line::renderNaiveLine(*polyChain[0], *polyChain[polyChain.size() - 1],
                           vertices, indices);

@@ -1,6 +1,7 @@
 #ifndef _CIRCLE
 #define _CIRCLE
 #include "Buffer/Buffer.hpp"
+#include "DrawMode.hpp"
 #include "MeshPoint.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
@@ -9,6 +10,7 @@ class Circle : public MeshPoint {
 
 public:
   Circle(Point center, int r, RGB &color, Shader &shader) {
+    this->type = DrawMode::CIRCLE;
     this->shader = &shader;
     this->color = &color;
     this->r = r;

@@ -1,5 +1,6 @@
 #ifndef _MESH
 #define _MESH
+#include "DrawMode.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
 #include <GL/glew.h>
@@ -11,6 +12,9 @@ public:
     IBO = 0;
     indexCount = 0;
   }
+
+  DrawMode getMeshType() { return this->type; }
+
   void CreateMesh(Shader &shader, RGB &color, GLfloat *vertices,
                   unsigned int *indices, unsigned int numOfVertices,
                   unsigned int numOfIndices) {
@@ -64,5 +68,6 @@ protected:
   GLsizei indexCount;
   Shader shader;
   float uniform_color_vec[3];
+  DrawMode type;
 };
 #endif

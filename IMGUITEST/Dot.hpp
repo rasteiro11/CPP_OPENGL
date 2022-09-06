@@ -1,12 +1,14 @@
 #ifndef _DOT
 #define _DOT
 #include "Buffer/Buffer.hpp"
+#include "DrawMode.hpp"
 #include "MeshPoint.hpp"
 #include "Point.hpp"
 class Dot : public MeshPoint {
 public:
   Dot(Point p, RGB &color, Shader &shader) {
     this->p = p;
+    this->type = DrawMode::POINT;
     this->shader = &shader;
     this->color = &color;
     vertices.push_point(p);

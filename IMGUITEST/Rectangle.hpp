@@ -1,5 +1,6 @@
 #ifndef _RECTANGLE
 #define _RECTANGLE
+#include "DrawMode.hpp"
 #include "Line.hpp"
 #include "MeshPoint.hpp"
 #include "Point.hpp"
@@ -12,6 +13,7 @@ private:
 
 public:
   Rectangle(Point p1, Point p2, RGB &color, Shader &shader) {
+    this->type = DrawMode::RECTANGLE;
     Point p3 = Point(p1.x, p2.y);
     Point p4 = Point(p2.x, p1.y);
     Line::renderNaiveLine(p1, p3, vertices, indices);

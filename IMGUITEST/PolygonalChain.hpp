@@ -13,6 +13,7 @@ protected:
 
 public:
   PolygonalChain(std::vector<Point *> polyChain, RGB &color, Shader &shader) {
+    this->type = DrawMode::POLYGONALCHAIN;
     generatePolygonalConnection(polyChain, color, shader);
     CreateMesh(shader, color, vertices.return_raw_buffer(),
                indices.return_raw_buffer(), vertices.get_size(),

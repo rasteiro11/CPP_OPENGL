@@ -17,6 +17,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iterator>
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -100,6 +101,10 @@ public:
     return 0;
   }
 
+  Mesh *getMeshByIndex(int index) {
+    return (index <= this->meshList.size()) ? this->meshList[index] : nullptr;
+  }
+
   void loop() {
     while (!getShouldClose()) {
       glUseProgram(0);
@@ -121,6 +126,12 @@ public:
       getShader(0).UseShader();
       selectDrawMode();
       optionSelectors();
+      if (ImGui::Button("GET FIRST TYPE")) {
+        Mesh *line = getMeshByIndex(0);
+        if (line->getMeshType() == DrawMode::LINE) {
+          std::cout << "THIS IS A LINE" << std::endl;
+        }
+      }
 
       ImGui::Render();
 
