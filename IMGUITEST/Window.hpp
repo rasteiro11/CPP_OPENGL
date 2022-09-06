@@ -126,13 +126,6 @@ public:
       getShader(0).UseShader();
       selectDrawMode();
       optionSelectors();
-      if (ImGui::Button("GET FIRST TYPE")) {
-        Mesh *line = getMeshByIndex(0);
-        if (line->getMeshType() == DrawMode::LINE) {
-          std::cout << "THIS IS A LINE" << std::endl;
-        }
-      }
-
       ImGui::Render();
 
       checkForCompletePolygonalChain(polyVert);
@@ -336,12 +329,45 @@ private:
       }
     }
   }
+
+  void checkForCollisions(float xPos, float yPos) {
+    if (this->meshList.size() != 0) {
+      for (auto mesh : this->meshList) {
+        switch (mesh->getMeshType()) {
+        case DrawMode::RECTANGLE: {
+
+          Rectangle *rect = static_cast<Rectangle *>(mesh);
+          rect->hasCollided(Point(xPos, yPos));
+          break;
+        }
+        case DrawMode::CIRCLE: {
+          Circle *circle = static_cast<Circle *>(mesh);
+          circle->hasCollided(Point(xPos, yPos));
+          break;
+        }
+        }
+        // if (mesh->getMeshType() == DrawMode::RECTANGLE) {
+        //  Rectangle *rect = static_cast<Rectangle *>(mesh);
+        //  rect->hasCollided(Point(xPos, yPos));
+        //}
+      }
+      //  Mesh *rect = this->getMeshByIndex(0);
+      //  // std::cout << "THIS IS A RECTANGLE" << std::endl;
+      //  Rectangle *r = (Rectangle *)(rect);
+      //  (r->hasCollided(Point((float)xPos, (float)yPos)))
+      //      ? std::cout << "WE COLLIDED" << std::endl
+      //      : std::cout << "NOT COLLIDED" << std::endl;
+      //}
+    }
+  }
+
   static void mouse_button_callback(GLFWwindow *window, int button, int action,
                                     int mods) {
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
       double xPos, yPos;
       glfwGetCursorPos(window, &xPos, &yPos);
+      theWindow->checkForCollisions(xPos, yPos);
       switch (theWindow->drawMode) {
       case DrawMode::LINE:
         theWindow->tempPoints.push_back(new Point((float)xPos, (float)yPos));

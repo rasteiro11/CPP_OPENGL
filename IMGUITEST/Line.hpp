@@ -1,13 +1,14 @@
 #ifndef _LINE_TEST
 #define _LINE_TEST
 #include "Buffer/Buffer.hpp"
+#include "Collidable.hpp"
 #include "DrawMode.hpp"
 #include "MeshPoint.hpp"
 #include "Point.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
 
-class Line : public MeshPoint {
+class Line : public MeshPoint, public Collidable {
   // static constexpr float step = 0.001;
 
 public:
@@ -27,6 +28,8 @@ public:
   ~Line() { ClearMesh(); }
 
   void drawLine() { RenderMesh(); }
+
+  bool hasCollided(Point p) override {}
 
   static void renderNaiveLine(Point point1, Point point2,
                               Buffer<GLfloat> &vertices,

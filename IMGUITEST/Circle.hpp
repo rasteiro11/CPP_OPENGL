@@ -1,12 +1,14 @@
 #ifndef _CIRCLE
 #define _CIRCLE
 #include "Buffer/Buffer.hpp"
+#include "Collidable.hpp"
 #include "DrawMode.hpp"
 #include "MeshPoint.hpp"
+#include "Point.hpp"
 #include "RGB.hpp"
 #include "Shader.hpp"
 #include <cmath>
-class Circle : public MeshPoint {
+class Circle : public MeshPoint, public Collidable {
 
 public:
   Circle(Point center, int r, RGB &color, Shader &shader) {
@@ -21,6 +23,20 @@ public:
                indices.get_size());
   }
 
+  bool hasCollided(Point p) override {
+    Point p2 = Point(this->center.x + r, this->center.y + r);
+    Point p1 = Point(this->center.x - r, this->center.y - r);
+    std::cout << this->center << std::endl;
+    std::cout << "P2" << p2 << std::endl;
+    std::cout << "P1" << p1 << std::endl;
+    if ((p.x > p1.x) && (p.y > p1.y)) {
+      if ((p.x < p2.x) && (p.y < p2.y)) {
+        std::cout << "WE ARE INSIDE CIRCLE" << std::endl;
+        return true;
+      }
+    }
+    return false;
+  }
   // static void renderCircle(Point center, int r, Buffer<GLfloat> &vertices,
   //                         Buffer<unsigned int> &indexes) {
   //  int index = indexes.get_size();
