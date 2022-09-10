@@ -17,6 +17,8 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <chrono>
+#include <ctime>
 #include <iterator>
 #include <stdio.h>
 #include <string>
@@ -190,6 +192,11 @@ private:
   GLint width, height;
   GLint bufferWidth, bufferHeight;
   int polyVert = Config::polyMin;
+  static std::chrono::time_point<
+      std::chrono::_V2::system_clock,
+      std::chrono::duration<long, std::ratio<1, 1000000000>>>
+      lastRightClickedTime;
+  static int n_clicks;
 
   bool keys[1024];
 
@@ -378,6 +385,10 @@ private:
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
     double xPos, yPos;
     glfwGetCursorPos(window, &xPos, &yPos);
+    // auto time1 = std::chrono::high_resolution_clock::now();
+    // auto time2 = std::chrono::high_resolution_clock::now();
+    // auto diff = time2 - time1;
+    // std::cout << diff.count() << std::endl;
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
       switch (theWindow->drawMode) {
       case DrawMode::LINE:
@@ -404,9 +415,30 @@ private:
         break;
       }
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+      if (theWindow->n_clicks == 0) {
+        theWindow->n_clicks++;
+        theWindow->lastRightClickedTime =
+            std::chrono::high_resolution_clock::now();
+      } else {
+        auto click2 = std::chrono::high_resolution_clock::now();
+        auto diff = click2 - theWindow->lastRightClickedTime;
+        std::cout << "Elapsed time in milliseconds: "
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(diff)
+                         .count()
+                  << " ms" << std::endl;
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(diff)
+                .count() < 350) {
+          std::cout << "HAHA DOUBLE CLICK" << std::endl;
+        }
+        theWindow->n_clicks = 0;
+      }
       theWindow->checkForCollisions(xPos, yPos);
     }
   }
 };
 // int Window::polyVert = Config::polyMin;
+std::chrono::time_point<std::chrono::_V2::system_clock,
+                        std::chrono::duration<long, std::ratio<1, 1000000000>>>
+    Window::lastRightClickedTime;
+int Window::n_clicks = 0;
 #endif
