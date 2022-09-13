@@ -16,6 +16,8 @@ public:
     generatePolygonalConnection(polyChain, color, shader);
     Line::renderNaiveLine(*polyChain[0], *polyChain[polyChain.size() - 1],
                           vertices, indices);
+    polyChainLines.push_back(
+        new Line(*polyChain[0], *polyChain[polyChain.size() - 1]));
     CreateMesh(shader, color, vertices.return_raw_buffer(),
                indices.return_raw_buffer(), vertices.get_size(),
                indices.get_size());

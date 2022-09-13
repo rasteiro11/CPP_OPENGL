@@ -17,29 +17,30 @@ public:
   PolygonalChain(std::vector<Point *> polyChain, RGB &color, Shader &shader) {
     this->type = DrawMode::POLYGONALCHAIN;
     generatePolygonalConnection(polyChain, color, shader);
-    CreateMesh(shader, color, vertices.return_raw_buffer(),
-               indices.return_raw_buffer(), vertices.get_size(),
-               indices.get_size());
-  }
-
-  void generatePolygonalConnection(std::vector<Point *> polyChain, RGB &color,
-                                   Shader &shader) {
-    for (int i = 0; i < polyChain.size() - 1; i++) {
-      Line::renderNaiveLine(*polyChain[i], *polyChain[i + 1], vertices,
-                            indices);
-      polyChainLines.push_back(new Line(*polyChain[i], *polyChain[i + 1]));
-    }
+    // CreateMesh(shader, color, vertices.return_raw_buffer(),
+    //           indices.return_raw_buffer(), vertices.get_size(),
+    //           indices.get_size());
   }
 
   bool hasCollided(Point p) {
     bool all = false;
     for (auto line : polyChainLines) {
-      if (line->hasCollided(p)) {
-        all = true;
+      all = line->hasCollided(p);
+      if (all == true) {
         break;
       }
     }
     return all;
+  }
+
+  void generatePolygonalConnection(std::vector<Point *> polyChain, RGB &color,
+                                   Shader &shader) {
+    for (int i = 0; i < polyChain.size() - 1; i++) {
+      // Line::renderNaiveLine(*polyChain[i], *polyChain[i + 1], vertices,
+      //                      indices);
+      polyChainLines.push_back(
+          new Line(*polyChain[i], *polyChain[i + 1], color, shader));
+    }
   }
 
   void drawPolygonalChain() { RenderMesh(); }

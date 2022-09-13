@@ -64,18 +64,7 @@ public:
     glfwMakeContextCurrent(mainWindow);
     glfwSwapInterval(1);
 
-    // IMGUI_CHECKVERSION();
-    // ImGuiIO &io = ImGui::GetIO();
-    //(void)io;
-
-    // ImGui::StyleColorsDark();
-
-    // ImGui_ImplGlfw_InitForOpenGL(mainWindow, true);
-    // ImGui_ImplOpenGL3_Init(glsl_version);
-
     createCallbacks();
-    //  glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     glewExperimental = GL_TRUE;
 
     if (glewInit() != GLEW_OK) {
@@ -143,15 +132,12 @@ public:
   }
 
   void optionSelectors() {
-    if (drawMode == DrawMode::POLYGON || drawMode == DrawMode::POLYGONALCHAIN) {
-      ImGui::SliderInt("Select Polygonal Vertices", &polyVert, Config::polyMin,
-                       Config::polyMax);
-    }
     if (drawMode == DrawMode::CIRCLE) {
       ImGui::SliderInt("Radius Size", &radius, Config::radiusMin,
                        Config::radiusMax);
     }
     ImGui::ColorPicker3("Color Selector", floatColorArr);
+    ImGui::Checkbox("DELETE", &deletionMode);
   }
 
   void pushShader(Shader &shader) { shaderList.push_back(shader); }
@@ -192,11 +178,13 @@ private:
   GLint width, height;
   GLint bufferWidth, bufferHeight;
   int polyVert = Config::polyMin;
+  static bool double_clicked;
   static std::chrono::time_point<
       std::chrono::_V2::system_clock,
       std::chrono::duration<long, std::ratio<1, 1000000000>>>
       lastRightClickedTime;
   static int n_clicks;
+  static bool deletionMode;
 
   bool keys[1024];
 
@@ -234,19 +222,21 @@ private:
 
   void checkForCompletePolygon(int n_vert) {
     if (drawMode == DrawMode::POLYGON) {
-      if (tempPoints.size() >= polyVert) {
+      if ((this->double_clicked) && (this->tempPoints.size() != 0)) {
         addMesh(*new Polygon(tempPoints, *tempColor, getShader(0)));
         tempPoints.clear();
       }
+      this->double_clicked = false;
     }
   }
 
   void checkForCompletePolygonalChain(int n_vert) {
     if (drawMode == DrawMode::POLYGONALCHAIN) {
-      if (tempPoints.size() >= polyVert) {
+      if ((this->double_clicked) && (this->tempPoints.size() != 0)) {
         addMesh(*new PolygonalChain(tempPoints, *tempColor, getShader(0)));
         tempPoints.clear();
       }
+      this->double_clicked = false;
     }
   }
 
@@ -343,10 +333,10 @@ private:
       for (auto mesh : this->meshList) {
         switch (mesh->getMeshType()) {
         case DrawMode::RECTANGLE: {
-
           Rectangle *rect = static_cast<Rectangle *>(mesh);
           if (rect->hasCollided(clickPoint)) {
             rect->setMeshColor(1.0, 1.0, 0.0);
+            rect->setShouldRender(false);
           }
           break;
         }
@@ -354,6 +344,23 @@ private:
           Circle *circle = static_cast<Circle *>(mesh);
           if (circle->hasCollided(clickPoint)) {
             circle->setMeshColor(1.0, 1.0, 0.0);
+            circle->setShouldRender(false);
+          }
+          break;
+        }
+        case DrawMode::POLYGON: {
+          Polygon *polygon = static_cast<Polygon *>(mesh);
+          if (polygon->hasCollided(clickPoint)) {
+            polygon->setMeshColor(1.0, 1.0, 0.0);
+            polygon->setShouldRender(false);
+          }
+          break;
+        }
+        case DrawMode::POLYGONALCHAIN: {
+          PolygonalChain *polygonChain = static_cast<PolygonalChain *>(mesh);
+          if (polygonChain->hasCollided(clickPoint)) {
+            polygonChain->setMeshColor(1.0, 1.0, 0.0);
+            polygonChain->setShouldRender(false);
           }
           break;
         }
@@ -361,22 +368,12 @@ private:
           Line *line = static_cast<Line *>(mesh);
           if (line->hasCollided(clickPoint)) {
             line->setMeshColor(1.0, 1.0, 0.0);
+            line->setShouldRender(false);
           }
           break;
         }
         }
-        // if (mesh->getMeshType() == DrawMode::RECTANGLE) {
-        //  Rectangle *rect = static_cast<Rectangle *>(mesh);
-        //  rect->hasCollided(Point(xPos, yPos));
-        //}
       }
-      //  Mesh *rect = this->getMeshByIndex(0);
-      //  // std::cout << "THIS IS A RECTANGLE" << std::endl;
-      //  Rectangle *r = (Rectangle *)(rect);
-      //  (r->hasCollided(Point((float)xPos, (float)yPos)))
-      //      ? std::cout << "WE COLLIDED" << std::endl
-      //      : std::cout << "NOT COLLIDED" << std::endl;
-      //}
     }
   }
 
@@ -385,10 +382,6 @@ private:
     Window *theWindow = static_cast<Window *>(glfwGetWindowUserPointer(window));
     double xPos, yPos;
     glfwGetCursorPos(window, &xPos, &yPos);
-    // auto time1 = std::chrono::high_resolution_clock::now();
-    // auto time2 = std::chrono::high_resolution_clock::now();
-    // auto diff = time2 - time1;
-    // std::cout << diff.count() << std::endl;
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
       switch (theWindow->drawMode) {
       case DrawMode::LINE:
@@ -428,17 +421,21 @@ private:
                   << " ms" << std::endl;
         if (std::chrono::duration_cast<std::chrono::milliseconds>(diff)
                 .count() < 350) {
+          double_clicked = true;
           std::cout << "HAHA DOUBLE CLICK" << std::endl;
         }
         theWindow->n_clicks = 0;
+        if (deletionMode) {
+          theWindow->checkForCollisions(xPos, yPos);
+        }
       }
-      theWindow->checkForCollisions(xPos, yPos);
     }
   }
 };
-// int Window::polyVert = Config::polyMin;
 std::chrono::time_point<std::chrono::_V2::system_clock,
                         std::chrono::duration<long, std::ratio<1, 1000000000>>>
     Window::lastRightClickedTime;
 int Window::n_clicks = 0;
+bool Window::double_clicked = true;
+bool Window::deletionMode = false;
 #endif

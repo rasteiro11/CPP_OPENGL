@@ -14,6 +14,11 @@ class Line : public MeshPoint, public Collidable {
 
 public:
   Line() {}
+  Line(Point p1, Point p2) {
+    this->type = DrawMode::LINE;
+    this->p1 = p1;
+    this->p2 = p2;
+  }
   Line(Point p1, Point p2, RGB &color, Shader &shader) {
     this->type = DrawMode::LINE;
     this->p1 = p1;
